@@ -15,7 +15,7 @@
                 </header>
                 <nav id="nav">
                     <ul>
-                        <li><a href="#one" class="active">Overview</a></li>
+                        <li><a href="#one">Overview</a></li>
                         <li><a href="#two">Implementation 1: Alignment</a></li>
                         <li><a href="#three">Implementation 2: Image Pyramid</a></li>
                         <li><a href="#four">Bells & Whistles (Extra Credit)</a></li>
@@ -47,9 +47,9 @@
                                 <p>Sergei Mikhailovich Prokudin-Gorskii (1863-1944) was a Russian photographer who captured three exposures of each scene onto a glass plate using red, green, and blue filters. The aim of this project is to digitize Prokudin-Gorskii's glass plate images and, through image processing techniques, automatically generate a color image.</p>
                                 <!-- Images Row -->
                                 <div class="row">
-                                    <div class="col-4"><span class="image fit"><img src="media/cathedral.jpg" alt="Cathedral" style="width: 150px;"></span></div>
-                                    <div class="col-4"><span class="image fit"><img src="media/monastery.jpg" alt="Monastery" style="width: 150px;"></span></div>
-                                    <div class="col-4"><span class="image fit"><img src="media/tobolsk.jpg" alt="Tobolsk Kremlin" style="width: 150px;"></span></div>
+                                    <div class="col-4"><span class="image fit"><img src="media/cathedral.jpg" alt="Cathedral" style="width: 170px;"></span></div>
+                                    <div class="col-4"><span class="image fit"><img src="media/monastery.jpg" alt="Monastery" style="width: 170px;"></span></div>
+                                    <div class="col-4"><span class="image fit"><img src="media/tobolsk.jpg" alt="Tobolsk Kremlin" style="width: 170px;"></span></div>
                                 </div>
                             </div>
                         </section>
@@ -61,17 +61,17 @@
                                 <p>The first thing we need to do is divide the image into three equal parts by height to separately obtain the blue, green, and red plates. Then, we need to overlap the blue, green, and red plates. Since these three plates are not identical, we need an algorithm to better align them. We can move the images along the x-axis and y-axis for comparison. I chose to keep the blue plate stationary and move the red and green plates to align with the blue. I chose a window size of 20 (translate +/- 20 horizontally and +/- 20 vertically). Additionally, we need a method of evaluation to judge the alignment. I initially tried three methods: Euclidean Distance, Normalized Cross-Correlation, and Mean Absolute Error. Among these, Normalized Cross-Correlation generally performs better in most cases.</p>
                                 <!-- Images with Descriptions -->
                                 <div class="row">
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_cathedral.jpg" alt="Aligned Cathedral" style="width: 250px; height: auto;"/></span>
-                                        <p style="text-align: center;">aligned_cathedral.jpg. R: (12, 3), G: (5, 2)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_cathedral.jpg" alt="Aligned Cathedral" style="width: 350px; height: auto;"/></span>
+                                        <p style="text-align: left;">aligned_cathedral.jpg. R: (12, 3), G: (5, 2)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_monastery.jpg" alt="Aligned Monastery" style="width: 250px; height: auto;"/></span>
-                                        <p style="text-align: center;">aligned_monastery.jpg. R: (3, 2), G: (-3, 2)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_monastery.jpg" alt="Aligned Monastery" style="width: 350px; height: auto;"/></span>
+                                        <p style="text-align: left;">aligned_monastery.jpg. R: (3, 2), G: (-3, 2)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_tobolsk.jpg" alt="Aligned Tobolsk Kremlin" style="width: 250px; height: auto;"/></span>
-                                        <p style="text-align: center;">aligned_tobolsk.jpg. R: (7,3), G: (3, 3)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_tobolsk.jpg" alt="Aligned Tobolsk Kremlin" style="width: 350px; height: auto;"/></span>
+                                        <p style="text-align: left;">aligned_tobolsk.jpg. R: (7,3), G: (3, 3)</p>
                                     </div>
                                 </div>
                             </div>
@@ -84,41 +84,45 @@
                                 <p>The second feature I implemented is the Image Pyramid. In addition to handling JPG images, we also work with large jpg images that contain many pixels. Using our previous method on these large images would be computationally intensive. Therefore, I introduced the align_pyramid function. This function begins by aligning downscaled versions of the images, which allows for the use of larger window sizes due to the reduced image size. After alignment, we upscale the images back to their original size and scale up the shifts accordingly. We then perform finer alignment on the upscaled images using smaller window sizes. Specifically, I used a three-level pyramid for this process, with each level downscaled by a factor of two. The largest downscaled image uses a window size of 24, the intermediate level uses 12, and the top level uses 6. This pyramid approach enables efficient processing of large jpg images.</p>
                                 <!-- Grid of Images -->
                                 <div class="row">
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_church.jpg" alt="Aligned Church" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Church.jpg. R: (58, -4), G: (25, 4)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_church.jpg" alt="Aligned Church" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Church.jpg. R: (58, -4), G: (25, 4)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_three_generations.jpg" alt="Aligned Three Generations" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Three Generations.jpg. R: (111, 10), G: (53, 13)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_three_generations.jpg" alt="Aligned Three Generations" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Three Generations.jpg. R: (111, 10), G: (53, 13)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_melons.jpg" alt="Aligned Melons" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Melons.jpg. R: (177, 14), G: (81, 11)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_melons.jpg" alt="Aligned Melons" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Melons.jpg. R: (177, 14), G: (81, 11)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_onion_church.jpg" alt="Aligned Onion Church" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Onion Church.jpg. R: (108, 36), G: (51, 27)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_onion_church.jpg" alt="Aligned Onion Church" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Onion Church.jpg. R: (108, 36), G: (51, 27)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_train.jpg" alt="Aligned Train" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Train.jpg. R: (86, 33), G: (43, 8)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_train.jpg" alt="Aligned Train" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Train.jpg. R: (86, 33), G: (43, 8)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_icon.jpg" alt="Aligned Icon" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Icon.jpg. R: (90, 23), G: (41, 17)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_icon.jpg" alt="Aligned Icon" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Icon.jpg. R: (90, 23), G: (41, 17)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_self_portrait.jpg" alt="Aligned Self Portrait" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Self Portrait.jpg. R: (175, 37), G: (78, 29)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_self_portrait.jpg" alt="Aligned Self Portrait" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Self Portrait.jpg. R: (175, 37), G: (78, 29)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_harvesters.jpg" alt="Aligned Harvesters" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Harvesters.jpg. R: (123, 14), G: (60, 18)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_harvesters.jpg" alt="Aligned Harvesters" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Harvesters.jpg. R: (123, 14), G: (60, 18)</p>
                                     </div>
-                                    <div class="col-4">
-                                        <span class="image fit"><img src="media/aligned_sculpture.jpg" alt="Aligned Sculpture" style="width: 250px; height: auto;"></span>
-                                        <p style="text-align: center;">Aligned Sculpture.jpg. R: (140, -27), G: (33, -11)</p>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_sculpture.jpg" alt="Aligned Sculpture" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Sculpture.jpg. R: (140, -27), G: (33, -11)</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/aligned_lady.jpg" alt="Aligned Ldy" style="width: 350px; height: auto;"></span>
+                                        <p style="text-align: left;">Aligned Lady.jpg. R: (116, 11), G: (54, 8)</p>
                                     </div>
                                 </div>
                             </div>
@@ -135,15 +139,19 @@
                                     <h4>Auto Cropping</h4>
                                     <p>This feature enhances image processing by trimming away unnecessary borders and focusing on the primary subject matter. By calculating the average intensity across rows and columns, it determines the cut-off points to eliminate irrelevant portions within defined intensity thresholds (Black: <50, White: >250). This method effectively minimizes distractions, improving our alignment algorithm. This is especially true for images with large borders, such as "monastery.jpg".</p>
                                     <div class="row">
-                                        <div class="col-6"><span class="image fit"><img src="media/auto_cropping_before.jpg" alt="Before Auto Cropping"></span></div>
-                                        <div class="col-6"><span class="image fit"><img src="media/auto_cropping_after.jpg" alt="After Auto Cropping"></span></div>
+                                        <div class="col-6">
+                                            <span class="image fit"><img src="media/before_monastery.jpg" alt="Before Auto Cropping" style="width: 350px; height: auto;"></span>
+                                            <p style="text-align: center;">Before Auto Cropping: monastery.jpg</p>
+                                        </div>
+                                        <div class="col-6"><span class="image fit"><img src="media/after_monastery.jpg" alt="After Auto Cropping" style="width: 350px; height: auto;"></span>
+                                            <p style="text-align: center;">After Auto Cropping: monastery.jpg</p>
                                     </div>
                                 </div>
 
                                 <!-- Central Region Extraction -->
                                 <div class="container">
                                     <h4>Central Region Extraction</h4>
-                                    <p>Because calculating image similarity can be time-consuming, Central Region Extraction only processes the middle 50% of the image for alignment. If the central part aligns correctly, the rest of the image should also align properly. This approach significantly speeds up our computations.</p>
+                                    <p>Because calculating image similarity can be time-consuming, Central Region Extraction only processes the middle 50% of the image for alignment. If the central part aligns correctly, the rest of the image should also align properly. This approach significantly speeds up our computations and also fixes our border issue.</p>
                                 </div>
 
                                 <!-- Auto Contrasting -->
@@ -157,15 +165,21 @@
                                     <h4>Sobel Edge Detection</h4>
                                     <p>After completing the previous features, only one image, "emir.tif", still had some issues with alignment. Therefore, I implemented edge detection to advance and refine the alignment process. Compared to using RGB similarity alone, Sobel edge detection is more advanced and precise. It computes the image intensity gradients at each pixel, effectively outlining transitions in color and material.</p>
                                     <div class="row">
-                                        <div class="col-6"><span class="image fit"><img src="media/sobel_detection_before.jpg" alt="Before Sobel Edge Detection"></span></div>
-                                        <div class="col-6"><span class="image fit"><img src="media/sobel_detection_after.jpg" alt="After Sobel Edge Detection"></span></div>
+                                        <div class="col-6">
+                                            <span class="image fit"><img src="media/before_emir.jpg" alt="Before Sobel Edge Detection" style="width: 350px; height: auto;"></span>
+                                            <p style="text-align: center;">Before Sobel Edge Detection: emir.jpg</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="image fit"><img src="media/after_emir.jpg" alt="After Sobel Edge Detection" style="width: 350px; height: auto;"></span>
+                                            <p style="text-align: center;">After Sobel Edge Detection: emir.jpg</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </section>
             </div>
 
-        <!-- Scripts -->
+		<!-- Scripts -->
             <script src="assets/js/jquery.min.js"></script>
             <script src="assets/js/jquery.scrollex.min.js"></script>
             <script src="assets/js/jquery.scrolly.min.js"></script>
