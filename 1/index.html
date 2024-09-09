@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-    <title>Project 1 - Jason Yan</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="../assets/css/main.css" />
-</head>
+    <head>
+        <title>Project 1 - Jason Yan</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="../assets/css/main.css" />
+    </head>
     <body class="is-preload">
         <!-- Header -->
             <section id="header">
@@ -15,10 +15,10 @@
                 </header>
                 <nav id="nav">
                     <ul>
-                        <li><a href="#one" >Overview</a></li>
+                        <li><a href="#one" class="active">Overview</a></li>
                         <li><a href="#two">Implementation 1: Alignment</a></li>
-                        <li><a href="#three">Research Experience</a></li>
-                        <li><a href="#four">Education</a></li>
+                        <li><a href="#three">Implementation 2: Image Pyramid</a></li>
+                        <li><a href="#four">Bells & Whistles (Extra Credit)</a></li>
                     </ul>
                 </nav>
                 <footer>
@@ -30,7 +30,7 @@
                     </ul>
                 </footer>
             </section>
-            <!-- Wrapper -->
+        <!-- Wrapper -->
             <div id="wrapper">
 
                 <!-- Main -->
@@ -38,9 +38,6 @@
 
                         <!-- One -->
                         <section id="one">
-                            <div class="image main" data-position="center">
-                                <img src="media/aligned_emir.jpg" alt="Emir of Bukhara" style="width: 600px; height: auto;"/>
-                            </div>
                             <div class="container">
                                 <header class="major">
                                     <h3>Images of the Russian Empire: Colorizing the Prokudin-Gorskii photo collection</h3>
@@ -61,20 +58,20 @@
                         <section id="two">
                             <div class="container">
                                 <h3>Implementation 1: Alignment</h3>
-                                <p>This part of the project focuses on aligning the three different color-filtered images into a single composite image that represents the original color scene as captured by Prokudin-Gorskii.</p>
+                                <p>The first thing we need to do is divide the image into three equal parts by height to separately obtain the blue, green, and red plates. Then, we need to overlap the blue, green, and red plates. Since these three plates are not identical, we need an algorithm to better align them. We can move the images along the x-axis and y-axis for comparison. I chose to keep the blue plate stationary and move the red and green plates to align with the blue. I chose a window size of 20 (translate +/- 20 horizontally and +/- 20 vertically). Additionally, we need a method of evaluation to judge the alignment. I initially tried three methods: Euclidean Distance, Normalized Cross-Correlation, and Mean Absolute Error. Among these, Normalized Cross-Correlation generally performs better in most cases.</p>
                                 <!-- Images with Descriptions -->
                                 <div class="row">
                                     <div class="col-4">
                                         <span class="image fit"><img src="media/aligned_cathedral.jpg" alt="Aligned Cathedral" style="width: 250px; height: auto;"/></span>
-                                        <p style="text-align: center;">Example 1: Initial alignment using edges.</p>
+                                        <p style="text-align: center;">aligned_cathedral.jpg. R: (12, 3), G: (5, 2)</p>
                                     </div>
                                     <div class="col-4">
                                         <span class="image fit"><img src="media/aligned_monastery.jpg" alt="Aligned Monastery" style="width: 250px; height: auto;"/></span>
-                                        <p style="text-align: center;">Example 2: Refinement with feature matching.</p>
+                                        <p style="text-align: center;">aligned_monastery.jpg. R: (3, 2), G: (-3, 2)</p>
                                     </div>
                                     <div class="col-4">
                                         <span class="image fit"><img src="media/aligned_tobolsk.jpg" alt="Aligned Tobolsk Kremlin" style="width: 250px; height: auto;"/></span>
-                                        <p style="text-align: center;">Example 3: Final adjustments and corrections.</p>
+                                        <p style="text-align: center;">aligned_tobolsk.jpg. R: (7,3), G: (3, 3)</p>
                                     </div>
                                 </div>
                             </div>
@@ -83,41 +80,46 @@
                         <!-- Three -->
                         <section id="three">
                             <div class="container">
-                                <h3>Research Experience</h3>
-                                <br>
-                                <div class="features">
-                                    <article>
-                                        <a href="https://sky.cs.berkeley.edu/" class="image"><img src="images/research01.jpg" alt="Lora-Scale Project" style="width: 250px; height: auto;"/></a>
-                                        <div class="inner">
-                                            <h4>Lora-Scale</h4>
-                                            <h5>Feb 2024 - Present</h5>
-                                            <p>Working with Sky Computing Lab PhD student Michael Luo on the Lora-Scale project, which aims to enable the fast serving of personalized AI models, scaling from 10k to 1 million LORAs.</p>
-                                        </div>
-                                    </article>
-                                    <article>
-                                        <a href="https://rrid.mitpress.mit.edu/" class="image"><img src="images/research02.jpg" alt="Large Language Model Application" style="width: 250px; height: auto;"/></a>
-                                        <div class="inner">
-                                            <h4>Rapid Reviews\Infectious Diseases</h4>
-                                            <h5>Jan 2024 - Present</h5>
-                                            <p>Utilized a fine-tuned Large Language Model to categorize and identify preprints within the RRID domain, streamlining the peer review process. Developed Python scripts for web scraping medical preprints from multiple servers, automating data collection processes. Collaborated with the Dean of the UC Berkeley School of Public Health and UCSF researchers on automating the academic review process for infectious disease papers slated for publication by MIT Press.</p>
-                                        </div>
-                                    </article>
-                                    <article>
-                                        <a href="#" class="image"><img src="images/research03.jpg" alt="Smart Building Management System" style="width: 200px; height: auto;"/></a>
-                                        <div class="inner">
-                                            <h4>Smart Hospital</h4>
-                                            <h5>Feb 2024 - Present</h5>
-                                            <p>Work with Professor Yehuda Kalay and Professor Davide Schaumann, developing a "smart" Building Management System for the Cardiac Catheterization Lab at St. Bernardine Medical Center, leveraging simulation and deep reinforcement learning to improve healthcare facility adaptability and efficiency.</p>
-                                        </div>
-                                    </article>
-                                    <article>
-                                        <a href="#" class="image"><img src="images/research04.jpg" alt="Smart Building Management System" style="width: 200px; height: auto;"/></a>
-                                        <div class="inner">
-                                            <h4>Reducing Loneliness and Improving Social Support among Older Adults through Different Modalities of Personal Voice Assistants</h4>
-                                            <h5>May 2023 - Aug 2023</h5>
-                                            <p>Developed a rule-based NLP model to process speech-to-text data from user interactions with AI-enabled smart voice assistants.</p>
-                                        </div>
-                                    </article>
+                                <h3>Implementation 2: Image Pyramid</h3>
+                                <p>The second feature I implemented is the Image Pyramid. In addition to handling JPG images, we also work with large jpg images that contain many pixels. Using our previous method on these large images would be computationally intensive. Therefore, I introduced the align_pyramid function. This function begins by aligning downscaled versions of the images, which allows for the use of larger window sizes due to the reduced image size. After alignment, we upscale the images back to their original size and scale up the shifts accordingly. We then perform finer alignment on the upscaled images using smaller window sizes. Specifically, I used a three-level pyramid for this process, with each level downscaled by a factor of two. The largest downscaled image uses a window size of 24, the intermediate level uses 12, and the top level uses 6. This pyramid approach enables efficient processing of large jpg images.</p>
+                                <!-- Grid of Images -->
+                                <div class="row">
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_church.jpg" alt="Aligned Church" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Church.jpg. R: (58, -4), G: (25, 4)</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_three_generations.jpg" alt="Aligned Three Generations" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Three Generations.jpg. R: (111, 10), G: (53, 13)</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_melons.jpg" alt="Aligned Melons" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Melons.jpg. R: (177, 14), G: (81, 11)</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_onion_church.jpg" alt="Aligned Onion Church" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Onion Church.jpg. R: (108, 36), G: (51, 27)</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_train.jpg" alt="Aligned Train" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Train.jpg. R: (86, 33), G: (43, 8)</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_icon.jpg" alt="Aligned Icon" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Icon.jpg. R: (90, 23), G: (41, 17)</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_self_portrait.jpg" alt="Aligned Self Portrait" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Self Portrait.jpg. R: (175, 37), G: (78, 29)</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_harvesters.jpg" alt="Aligned Harvesters" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Harvesters.jpg. R: (123, 14), G: (60, 18)</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="image fit"><img src="media/aligned_sculpture.jpg" alt="Aligned Sculpture" style="width: 250px; height: auto;"></span>
+                                        <p style="text-align: center;">Aligned Sculpture.jpg. R: (140, -27), G: (33, -11)</p>
+                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -126,58 +128,41 @@
                         <!-- Four -->
                         <section id="four">
                             <div class="container">
-                                <h3>Education</h3>
-                                <div class="features">
-                                    <article>
-                                        <a href="https://www.berkeley.edu/" class="image"><img src="images/education01.jpg" alt="UC Berkeley logo" style="width: 250px; height: auto;"/></a>
-                                        <div class="inner">
-                                            <h4>University of California, Berkeley</h4>
-                                            <h5>Undergraduate in Computer Science and Data Science, 2021 - 2025.</br>
-                                            GPA: 3.94/4.00</h5>
-                                            <ul>
-                                                <li>COMPSCI 61A: The Structure and Interpretation of Computer Programs</li>
-                                                <li>COMPSCI 61B: Data Structures</li>
-                                                <li>COMPSCI 61C: Great Ideas of Computer Architecture</li>
-                                                <li>COMPSCI 70: Discrete Mathematics and Probability Theory</li>
-                                                <li>COMPSCI 161: Computer Security</li>
-                                                <li>COMPSCI 162: Operating Systems and System Programming</li>
-                                                <li>COMPSCI 170: Efficient Algorithms and Intractable Problems</li>
-                                                <li>COMPSCI 188: Introduction to Artificial Intelligence</li>
-                                                <li>COMPSCI 189: Introduction to Machine Learning</li>
-                                                <li>COMPSCI 194-177: Decentralized Finance</li>
-                                                <li>COMPSCI 195: Social Implications of Computer Technology</li>
-                                                <li>EECS 16A: Designing Information Devices and Systems I</li>
-                                                <li>EECS 127: Optimization Models in Engineering</li>
-                                                <li>DATA C8: Foundations of Data Science</li>
-                                                <li>DATA C100: Principles & Techniques of Data Science</li>
-                                                <li>DATA C140: Probability for Data Science</li>
-                                            </ul>
-                                        </div>
-                                    </article>
-                                    <article>
-                                        <a href="#" class="image"><img src="images/education02.jpg" alt="Brownell Talbot School logo" style="width: 250px; height: auto;"/></a>
-                                        <div class="inner">
-                                            <h4>Brownell Talbot School</h4>
-                                            <h5>2017 - 2021. </br>
-                                                GPA: 4.13/4.00</h5>
-                                            <ul>
-                                                <li>Nebraska Class C State Championship team, Jan 2021</li>
-                                                <li>University of Nebraska-Omaha Summer Scholars Program, Aug 2020</li>
-                                                <li>Vex Robotics National rank 19 in Skills challenge, Jan 2020</li>
-                                                <li>Vex Robotics Global rank 44 Programmer, Jan 2020</li>
-                                                <li>Nebraska Math Competition State Finals, 19th place, Jan 2020</li>
-                                                <li>VEX Tournament Champions in Tom Dickey Memorial, Lynx Robotics Battle in the Bluffs, North High School, & Benson High School robotics tournaments</li>
-                                                <li>Vex Robot Skills Champions in 3rd Annual Falcon "Ka-Kaw" Robotics Tournament, Western Iowa VEX Pwnament</li>
-                                                <li>Excellence Award in Elkhorn HS VRC & Heartland Regional Robotics Championship</li>
-                                                <li>University of Nebraska-Lincoln Engineering Summer Research Program, Scholarship winner by designing a water-filtering model for Narrabri, Australia</li>
-                                            </ul>
-                                        </div>
-                                    </article>
+                                <h3>Bells & Whistles (Extra Credit)</h3>
+
+                                <!-- Auto Cropping -->
+                                <div class="container">
+                                    <h4>Auto Cropping</h4>
+                                    <p>This feature enhances image processing by trimming away unnecessary borders and focusing on the primary subject matter. By calculating the average intensity across rows and columns, it determines the cut-off points to eliminate irrelevant portions within defined intensity thresholds (Black: <50, White: >250). This method effectively minimizes distractions, improving our alignment algorithm. This is especially true for images with large borders, such as "monastery.jpg".</p>
+                                    <div class="row">
+                                        <div class="col-6"><span class="image fit"><img src="media/auto_cropping_before.jpg" alt="Before Auto Cropping"></span></div>
+                                        <div class="col-6"><span class="image fit"><img src="media/auto_cropping_after.jpg" alt="After Auto Cropping"></span></div>
+                                    </div>
+                                </div>
+
+                                <!-- Central Region Extraction -->
+                                <div class="container">
+                                    <h4>Central Region Extraction</h4>
+                                    <p>Because calculating image similarity can be time-consuming, Central Region Extraction only processes the middle 50% of the image for alignment. If the central part aligns correctly, the rest of the image should also align properly. This approach significantly speeds up our computations.</p>
+                                </div>
+
+                                <!-- Auto Contrasting -->
+                                <div class="container">
+                                    <h4>Auto Contrasting</h4>
+                                    <p>Auto contrasting adjusts the brightness and contrast across an image to ensure that the pixel values fully utilize the available intensity spectrum. It scales the pixel values based on the image's lightest and darkest points, thus enhancing the visual details and improving our alignment.</p>
+                                </div>
+
+                                <!-- Sobel Edge Detection -->
+                                <div class="container">
+                                    <h4>Sobel Edge Detection</h4>
+                                    <p>After completing the previous features, only one image, "emir.tif", still had some issues with alignment. Therefore, I implemented edge detection to advance and refine the alignment process. Compared to using RGB similarity alone, Sobel edge detection is more advanced and precise. It computes the image intensity gradients at each pixel, effectively outlining transitions in color and material.</p>
+                                    <div class="row">
+                                        <div class="col-6"><span class="image fit"><img src="media/sobel_detection_before.jpg" alt="Before Sobel Edge Detection"></span></div>
+                                        <div class="col-6"><span class="image fit"><img src="media/sobel_detection_after.jpg" alt="After Sobel Edge Detection"></span></div>
+                                    </div>
                                 </div>
                             </div>
                         </section>
-                    </div>
-
             </div>
 
         <!-- Scripts -->
