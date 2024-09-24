@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Project 2 - Jason Yan</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="../assets/css/main.css" />
+    </head>
+    <body class="is-preload">
+        <!-- Header -->
+            <section id="header">
+                <header>
+                    <p id="logo"><a href="../index.html">Back to Main Page</a></p>
+                    <p>CS 180 Project 2</p>
+                </header>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="#one">Overview</a></li>
+                        <li><a href="#two">Part 1.1: Finite Difference Operator</a></li>
+                        <li><a href="#three">Part 1.2: Derivative of Gaussian (DoG) Filter</a></li>
+                        <li><a href="#four">Part 2.1: Image "Sharpening"</a></li>
+                        <li><a href="#five">Part 2.2: Hybrid Images</a></li>
+                        <li><a href="#six">Part 2.3: Gaussian and Laplacian Stacks</a></li>
+                        <li><a href="#seven">Part 2.4: Multiresolution Blending</a></li>
+                    </ul>
+                </nav>
+                <footer>
+                    <ul class="icons">
+                        <li><a href="https://zhengxuyan.github.io" class="icon solid fa-globe"><span class="label">Website</span></a></li>
+                        <li><a href="https://linkedin.com/in/zhengxu-yan" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+                        <li><a href="https://github.com/ZhengxuYan" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                        <li><a href=mailto:jason.yan@berkeley.edu class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                    </ul>
+                </footer>
+            </section>
+        <!-- Wrapper -->
+            <div id="wrapper">
+
+                <!-- Main -->
+                    <div id="main">
+
+                        <!-- One -->
+                        <section id="one">
+                            <div class="container">
+                                <header class="major">
+                                    <h3>Project 2: Fun with Filters and Frequencies!</h3>
+                                    <p>Jason Yan<br />
+                                    <!-- template freebie by <a href="http://html5up.net">HTML5 UP</a>.</p> -->
+                                </header>
+                                <p>This project explores various image processing techniques, including finite difference operators, Gaussian filters, image sharpening, hybrid images, and multiresolution blending.</p>
+                            </div>
+                        </section>
+
+                        <!-- Two -->
+                        <section id="two">
+                            <div class="container">
+                                <h3>Part 1.1: Finite Difference Operator</h3>
+                                <p>In this part, we implemented a finite difference operator to detect edges in images. The operator calculates the gradient in both x and y directions, allowing us to identify areas of rapid intensity change.</p>
+                                <div class="row">
+                                    <div class="col-6 col-12-medium">
+                                        <span class="image fit"><img src="media/part1/cameraman.png" alt="Original Cameraman Image" /></span>
+                                        <p class="caption">Original Cameraman Image</p>
+                                    </div>
+                                    <div class="col-6 col-12-medium">
+                                        <span class="image fit"><img src="media/part1/xy_edge.png" alt="XY Edge Detection Result" /></span>
+                                        <p class="caption">XY Edge Detection Result</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Three -->
+                        <section id="three">
+                            <div class="container">
+                                <h3>Part 1.2: Derivative of Gaussian (DoG) Filter</h3>
+                                <p>The Derivative of Gaussian (DoG) filter is a technique used in image processing for edge detection. It combines Gaussian smoothing with differentiation to highlight edges in images.</p>
+                                
+                                <div class="row">
+                                    <div class="col-4 col-12-medium">
+                                        <span class="image fit"><img src="media/part1/cameraman.png" alt="Original Image" /></span>
+                                        <p class="text-center">Original Image</p>
+                                    </div>
+                                    <div class="col-4 col-12-medium">
+                                        <span class="image fit"><img src="media/part1/gaussian_kernel.png" alt="Gaussian Kernel" /></span>
+                                        <p class="text-center">Gaussian Kernel</p>
+                                    </div>
+                                    <div class="col-4 col-12-medium">
+                                        <span class="image fit"><img src="media/part1/blurred_image.png" alt="Blurred Image" /></span>
+                                        <p class="text-center">Blurred Image</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit" style="max-width: 50%; margin: 0 auto;">
+                                            <img src="media/part1/blur_edge_image.png" alt="Blur Edge Image" />
+                                        </span>
+                                        <p class="text-center" style="margin-left: 320px;">Blur Edge Image</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-4 col-12-medium">
+                                        <span class="image fit"><img src="media/part1/DoG_filter_X.png" alt="DoG Filter X" /></span>
+                                        <p class="text-center">DoG Filter X</p>
+                                    </div>
+                                    <div class="col-4 col-12-medium">
+                                        <span class="image fit"><img src="media/part1/DoG_filter_Y.png" alt="DoG Filter Y" /></span>
+                                        <p class="text-center">DoG Filter Y</p>
+                                    </div>
+                                    <div class="col-4 col-12-medium">
+                                        <span class="image fit"><img src="media/part1/DoG_edge_image.png" alt="DoG Edge Image" /></span>
+                                        <p class="text-center">DoG Edge Image</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Four -->
+                        <section id="four">
+                            <div class="container">
+                                <h3>Part 2.1: Image "Sharpening"</h3>
+                                <p>In this part, we applied image sharpening techniques to various images. Each image below shows a comparison between the original (left) and sharpened (right) versions.</p>
+                            
+                                
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/sharpen/muller_compare.png" alt="Muller Comparison" /></span>
+                                        <p class="caption">Muller: Original vs. Sharpened</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/sharpen/lewan_compare.png" alt="Lewan Comparison" /></span>
+                                        <p class="caption">Lewan: Original vs. Sharpened</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/sharpen/compare_roben.png" alt="Roben Comparison" /></span>
+                                        <p class="caption">Roben: Original vs. Sharpened</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/sharpen/buffon_compare.png" alt="Buffon Comparison" /></span>
+                                        <p class="caption">Buffon: Original vs. Sharpened</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/sharpen/reus_compare.png" alt="Reus Comparison" /></span>
+                                        <p class="caption">Reus: Original vs. Sharpened</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/sharpen/compare_taj.png" alt="Taj Mahal Comparison" /></span>
+                                        <p class="caption">Taj Mahal: Original vs. Sharpened</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/sharpen/cat_compare.png" alt="Cat Comparison" /></span>
+                                        <p class="caption">Cats: Original vs. Blurred vs. Blurred + Sharpened</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Five -->
+                        <section id="five">
+                            <div class="container">
+                                <h3>Part 2.2: Hybrid Images</h3>
+                                <div class="row gx-2 gy-2 mb-3">
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/DerekPicture.jpg" alt="DerekPicture" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Derek</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/nutmeg.jpg" alt="nutmeg" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Nutmeg</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/hybrid_image2.png" alt="hybrid_image2" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Hybrid: Derek + Nutmeg</p>
+                                    </div>
+                                </div>
+                                <div class="row gx-2 gy-2 mb-3">
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/model.jpg" alt="model" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Model</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/butterfly.jpg" alt="butterfly" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Butterfly</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/hybrid_image3.png" alt="hybrid_image3" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Hybrid: Model + Butterfly</p>
+                                    </div>
+                                </div>
+                                <p><strong>My favorite hybrid image:</strong></p>
+                                <div class="row gx-2 gy-2 mb-3">
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/monalisa.jpg" alt="monalisa" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Mona Lisa</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/van_gogh.jpg" alt="van_gogh" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Van Gogh</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/hybrid_image1.png" alt="hybrid_image1" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Hybrid: Mona Lisa + Van Gogh</p>
+                                    </div>
+                                </div>
+                                <div class="row gx-2 gy-2 mb-3">
+                                    <div class="col-12">
+                                        <img src="media/part2/hybrid/FFT.png" alt="FFT of Hybrid Image" style="width: 100%; max-height: 500px; object-fit: contain;">
+                                        <p class="text-center mt-2">FFT of Hybrid Image: Mona Lisa + Van Gogh</p>
+                                    </div>
+                                </div>
+                                <p class="mb-2">Failure case:</p>
+                                <div class="row gx-2 gy-2">
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/fox.jpg" alt="fox" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Fox</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/xiaoliang.jpg" alt="xiaoliang" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Xiaoliang</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="media/part2/hybrid/hybrid_image4.png" alt="hybrid_image4" style="width: 100%; height: 250px; object-fit: cover;">
+                                        <p class="text-center mt-2">Hybrid: Fox + Xiaoliang</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Six -->
+                        <section id="six">
+                            <div class="container">
+                                <h3>Part 2.3: Gaussian and Laplacian Stacks</h3>
+                                <p>This section demonstrates the Gaussian and Laplacian stacks for the apple and orange images. The stacks show the decomposition of the images at different scales, which is crucial for multiresolution blending.</p>
+                                <div class="row">
+                                    <div class="col-4 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/spline/apple.jpeg" alt="Apple" /></span>
+                                        <p class="caption">Original Apple Image</p>
+                                    </div>
+                                    <div class="col-4 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/spline/orange.jpeg" alt="Orange" /></span>
+                                        <p class="caption">Original Orange Image</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <span class="image fit"><img src="media/part2/spline/stacks.png" alt="Gaussian and Laplacian Stacks" /></span>
+                                        <p class="caption">Gaussian and Laplacian Stacks</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Seven -->
+                        <section id="seven">
+                            <div class="container">
+                                <h3>Part 2.4: Multiresolution Blending (a.k.a. the oraple!)</h3>
+                                <p>In this section, we demonstrate the results of multiresolution blending using various image pairs. Each row shows the original images, the blending mask, and the final blended result.</p>
+                                
+                                <h4>Apple and Orange Blend</h4>
+                                <div class="row gx-2 gy-2 mb-4">
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/apple.jpeg" alt="Apple" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Apple</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/horizontal.png" alt="Apple-Orange Mask" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Mask</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/orange.jpeg" alt="Orange" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Orange</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/apple_orange_blended.png" alt="Apple-Orange Blend" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Blended Result</p>
+                                    </div>
+                                </div>
+
+                                <h4>Cat and Paint Blend</h4>
+                                <div class="row gx-2 gy-2 mb-4">
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/cat.jpg" alt="Cat" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Cat</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/paint_mask.png" alt="Cat-Paint Mask" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Mask</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/paint.jpg" alt="Paint" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Paint</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/cat_paint_blended.png" alt="Cat-Paint Blend" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Blended Result</p>
+                                    </div>
+                                </div>
+
+                                <h4>Cat and Elephant Blend</h4>
+                                <div class="row gx-2 gy-2 mb-4">
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/fight_cat_leftdown.png" alt="Fighting Cat" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Fighting Cat</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/fight_cat_mask.png" alt="Cat-Elephant Mask" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Mask</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/elephant.jpg" alt="Elephant" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Elephant</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/fight_cat_elephant_blended.png" alt="Cat-Elephant Blend" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Blended Result</p>
+                                    </div>
+                                </div>
+
+                                <h4>Cat and Dog Blend</h4>
+                                <div class="row gx-2 gy-2 mb-4">
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/cake_rightdown.png" alt="Cake Right" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Cake (Right)</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/cake_mask.png" alt="Cat-Dog Mask" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Mask</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/cat_dog.jpg" alt="Cat and Dog" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Cat and Dog</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="media/part2/blend/cake_catdog_blended.png" alt="Cat-Dog Blend" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <p class="text-center mt-2">Blended Result</p>
+                                    </div>
+                                </div>
+
+                                <h4>Blended Stacks</h4>
+                                <div class="row gx-2 gy-2 mb-4">
+                                    <div class="col-12 mb-4">
+                                        <img src="media/part2/blend/stack1.png" alt="Blended Stack 1" style="width: 100%; height: 1000px; object-fit: contain;">
+                                    </div>
+                                </div>
+                                <div class="row gx-2 gy-2 mb-4">
+                                    <div class="col-12 mb-4">
+                                        <img src="media/part2/blend/stack2.png" alt="Blended Stack 2" style="width: 100%; height: 1000px; object-fit: contain;">
+                                    </div>
+                                </div>
+                                <div class="row gx-2 gy-2 mb-4">
+                                    <div class="col-12 mb-4">
+                                        <img src="media/part2/blend/stack3.png" alt="Blended Stack 3" style="width: 100%; height: 1000px; object-fit: contain;">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+            </div>
+
+		<!-- Scripts -->
+            <script src="assets/js/jquery.min.js"></script>
+            <script src="assets/js/jquery.scrollex.min.js"></script>
+            <script src="assets/js/jquery.scrolly.min.js"></script>
+            <script src="assets/js/browser.min.js"></script>
+            <script src="assets/js/breakpoints.min.js"></script>
+            <script src="assets/js/util.js"></script>
+            <script src="assets/js/main.js"></script>
+
+    </body>
+</html>
