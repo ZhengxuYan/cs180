@@ -47,7 +47,7 @@
                                     <p>Jason Yan<br />
                                     <!-- template freebie by <a href="http://html5up.net">HTML5 UP</a>.</p> -->
                                 </header>
-                                <p>This project explores various image processing techniques, including finite difference operators, Gaussian filters, image sharpening, hybrid images, and multiresolution blending.</p>
+                                <p>This project explores various image processing techniques, including finite difference operators, Gaussian filters, image sharpening, hybrid images, and blending.</p>
                             </div>
                         </section>
 
@@ -55,7 +55,7 @@
                         <section id="two">
                             <div class="container">
                                 <h3>Part 1.1: Finite Difference Operator</h3>
-                                <p>In this part, we implemented a finite difference operator to detect edges in images. The operator calculates the gradient in both x and y directions, allowing us to identify areas of rapid intensity change.</p>
+                                <p>In this part, we implemented a finite difference operator to detect edges in images. The operator calculates the gradient using convolution in both x and y directions, allowing us to identify areas of rapid intensity change. We then threshold the gradient magnitude to get the edge image that shows the edges and less noise.</p>
                                 <div class="row">
                                     <div class="col-6 col-12-medium">
                                         <span class="image fit"><img src="media/part1/cameraman.png" alt="Original Cameraman Image" /></span>
@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="col-6 col-12-medium">
                                         <span class="image fit"><img src="media/part1/xy_edge.png" alt="XY Edge Detection Result" /></span>
-                                        <p class="caption">XY Edge Detection Result</p>
+                                        <p class="caption">Finite Difference Edge Detection Result (threshold=0.32)</p>
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                         <section id="three">
                             <div class="container">
                                 <h3>Part 1.2: Derivative of Gaussian (DoG) Filter</h3>
-                                <p>The Derivative of Gaussian (DoG) filter is a technique used in image processing for edge detection. It combines Gaussian smoothing with differentiation to highlight edges in images.</p>
+                                <p>The DoG filter, an edge detection method, is illustrated here. First, we obtain a 2D Gaussian kernel by taking the outer product of two 1D Gaussians. Then, we use this kernel to filter our image, which results in the high-frequency components being filtered out, making the image a bit more blurry, as you can see in the first line below. Next, we obtain an edge image using the same method as in 1.1, and you can notice that the lines in 1.2 are more pronounced and thicker. Afterwards, I tried to accomplish this operation directly using a convolution. We first take the partial derivative of the 2D Gaussian (similar to 1.1), and then convolve the image with this kernel, allowing us to blur and obtain the edge image in one step.</p>
                                 
                                 <div class="row">
                                     <div class="col-4 col-12-medium">
@@ -120,41 +120,41 @@
                         <section id="four">
                             <div class="container">
                                 <h3>Part 2.1: Image "Sharpening"</h3>
-                                <p>In this part, we applied image sharpening techniques to various images. Each image below shows a comparison between the original (left) and sharpened (right) versions.</p>
-                            
+                                <p>In this part, we applied image sharpening techniques to various images. Each image below shows a comparison between the original (left) and sharpened (right) versions. We sharpened these images using a single convolution by setting up a special kernel. First, the base of this kernel is -alpha * Gaussian_kernel, and in the center of this kernel, we also add 1 + alpha (which is the impulse filter minus the Gaussian filter). This way, we can obtain sharpened images with just one convolution.</p>
+                                <p>These images were found in my phone's photo album; they are pictures of my favorite soccer players that I saved back in 2016. Using this method, I made them look sharper. I chose alpha = 3 for all of them.</p>
                                 
                                 <div class="row">
                                     <div class="col-12 col-12-medium">
                                         <span class="image fit"><img src="media/part2/sharpen/muller_compare.png" alt="Muller Comparison" /></span>
-                                        <p class="caption">Muller: Original vs. Sharpened</p>
+                                        <p class="caption">Thomas Muller: Original vs. Sharpened</p>
                                     </div>
                                 </div>
                                 
                                 <div class="row">
                                     <div class="col-12 col-12-medium">
                                         <span class="image fit"><img src="media/part2/sharpen/lewan_compare.png" alt="Lewan Comparison" /></span>
-                                        <p class="caption">Lewan: Original vs. Sharpened</p>
+                                        <p class="caption">Robert Lewandowski: Original vs. Sharpened</p>
                                     </div>
                                 </div>
                                 
                                 <div class="row">
                                     <div class="col-12 col-12-medium">
                                         <span class="image fit"><img src="media/part2/sharpen/compare_roben.png" alt="Roben Comparison" /></span>
-                                        <p class="caption">Roben: Original vs. Sharpened</p>
+                                        <p class="caption">Arjen Robben: Original vs. Sharpened</p>
                                     </div>
                                 </div>
                                 
                                 <div class="row">
                                     <div class="col-12 col-12-medium">
                                         <span class="image fit"><img src="media/part2/sharpen/buffon_compare.png" alt="Buffon Comparison" /></span>
-                                        <p class="caption">Buffon: Original vs. Sharpened</p>
+                                        <p class="caption">Gianluigi Buffon: Original vs. Sharpened</p>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-12 col-12-medium">
                                         <span class="image fit"><img src="media/part2/sharpen/reus_compare.png" alt="Reus Comparison" /></span>
-                                        <p class="caption">Reus: Original vs. Sharpened</p>
+                                        <p class="caption">Marco Reus: Original vs. Sharpened</p>
                                     </div>
                                 </div>
                                 
@@ -165,10 +165,11 @@
                                     </div>
                                 </div>
 
+                                <p>These are my cats. I first used a Gaussian kernel to blur it, then used the kernel described above to make this blurred image sharper.</p>
                                 <div class="row">
                                     <div class="col-12 col-12-medium">
                                         <span class="image fit"><img src="media/part2/sharpen/cat_compare.png" alt="Cat Comparison" /></span>
-                                        <p class="caption">Cats: Original vs. Blurred vs. Blurred + Sharpened</p>
+                                        <p class="caption">My Cats: Original vs. Blurred vs. Blurred + Sharpened</p>
                                     </div>
                                 </div>
                             </div>
@@ -178,6 +179,8 @@
                         <section id="five">
                             <div class="container">
                                 <h3>Part 2.2: Hybrid Images</h3>
+                                <p>In this part, we extract a high-frequency version and a low-frequency version of an image. Then, we combine them so that when you look from a distance, you see the low-frequency image, and when you get closer, you can see the high-frequency image.</p>
+                                <p>The first column shows the low-frequency image, the second column shows the high-frequency image, and the third column shows the hybrid image. Through my experiments, I believe that keeping the low-frequency image in color and turning the high-frequency image to grey yields better results.</p>
                                 <div class="row gx-2 gy-2 mb-3">
                                     <div class="col-md-4">
                                         <img src="media/part2/hybrid/DerekPicture.jpg" alt="DerekPicture" style="width: 100%; height: 250px; object-fit: cover;">
@@ -189,7 +192,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <img src="media/part2/hybrid/hybrid_image2.png" alt="hybrid_image2" style="width: 100%; height: 250px; object-fit: cover;">
-                                        <p class="text-center mt-2">Hybrid: Derek + Nutmeg</p>
+                                        <p class="text-center mt-2">Hybrid: DerekNutmeg</p>
                                     </div>
                                 </div>
                                 <div class="row gx-2 gy-2 mb-3">
@@ -203,7 +206,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <img src="media/part2/hybrid/hybrid_image3.png" alt="hybrid_image3" style="width: 100%; height: 250px; object-fit: cover;">
-                                        <p class="text-center mt-2">Hybrid: Model + Butterfly</p>
+                                        <p class="text-center mt-2">Hybrid: Modelfly</p>
                                     </div>
                                 </div>
                                 <p><strong>My favorite hybrid image:</strong></p>
@@ -218,16 +221,17 @@
                                     </div>
                                     <div class="col-md-4">
                                         <img src="media/part2/hybrid/hybrid_image1.png" alt="hybrid_image1" style="width: 100%; height: 250px; object-fit: cover;">
-                                        <p class="text-center mt-2">Hybrid: Mona Lisa + Van Gogh</p>
+                                        <p class="text-center mt-2">Hybrid: Mona Van Gogh</p>
                                     </div>
                                 </div>
+                                <p>Here is the FFT of the hybrid image. You can see that the high-frequency components are in the center, and the low-frequency components are on the outside.</p>
                                 <div class="row gx-2 gy-2 mb-3">
                                     <div class="col-12">
                                         <img src="media/part2/hybrid/FFT.png" alt="FFT of Hybrid Image" style="width: 100%; max-height: 500px; object-fit: contain;">
-                                        <p class="text-center mt-2">FFT of Hybrid Image: Mona Lisa + Van Gogh</p>
+                                        <p class="text-center mt-2">FFT of Hybrid Image: Mona Van Gogh</p>
                                     </div>
                                 </div>
-                                <p class="mb-2">Failure case:</p>
+                                <p class="mb-2">Failure case: The hybrid of these two images didn't turn out very well. Regardless, the fox's appearance is more pronounced, while the human figure is less noticeable. This may be due to their very different backgrounds. The low-frequency image has too much weight.</p>
                                 <div class="row gx-2 gy-2">
                                     <div class="col-md-4">
                                         <img src="media/part2/hybrid/fox.jpg" alt="fox" style="width: 100%; height: 250px; object-fit: cover;">
@@ -249,7 +253,7 @@
                         <section id="six">
                             <div class="container">
                                 <h3>Part 2.3: Gaussian and Laplacian Stacks</h3>
-                                <p>This section demonstrates the Gaussian and Laplacian stacks for the apple and orange images. The stacks show the decomposition of the images at different scales, which is crucial for multiresolution blending.</p>
+                                <p>This section demonstrates the Gaussian and Laplacian stacks for the apple and orange images. The stacks show the decomposition of the images at different scales, which is crucial for later blending.</p>
                                 <div class="row">
                                     <div class="col-4 col-12-medium">
                                         <span class="image fit"><img src="media/part2/spline/apple.jpeg" alt="Apple" /></span>
@@ -272,9 +276,9 @@
                         <!-- Seven -->
                         <section id="seven">
                             <div class="container">
-                                <h3>Part 2.4: Multiresolution Blending (a.k.a. the oraple!)</h3>
-                                <p>In this section, we demonstrate the results of multiresolution blending using various image pairs. Each row shows the original images, the blending mask, and the final blended result.</p>
-                                
+                                <h3>Part 2.4: Multiresolution Blending</h3>
+                                <p>In this section, we demonstrate the results of blending using various image pairs and masks. Each row shows the original images, the blending mask, and the final blended result.</p>
+                                <p>First, I create a Gaussian stack of the masks, Gaussian and Laplacian stacks for both images. Then, at each level, I use this mask to blend the corresponding layers of the two images' Laplacian stacks. Finally, by adding up the layers of the blended Laplacian stacks, I obtain the blended image. The advantage of this method is that the blending appears more natural, without very obvious boundaries.</p>
                                 <h4>Apple and Orange Blend</h4>
                                 <div class="row gx-2 gy-2 mb-4">
                                     <div class="col-3">
@@ -295,7 +299,7 @@
                                     </div>
                                 </div>
 
-                                <h4>Cat and Paint Blend</h4>
+                                <h4>The left side is a photo of my cat, and the right side is a photo I took at BAMPFA, where I placed my cat's photo into the frame on the right.</h4>
                                 <div class="row gx-2 gy-2 mb-4">
                                     <div class="col-3">
                                         <img src="media/part2/blend/cat.jpg" alt="Cat" style="width: 100%; height: 200px; object-fit: cover;">
@@ -315,7 +319,7 @@
                                     </div>
                                 </div>
 
-                                <h4>Cat and Elephant Blend</h4>
+                                <h4>The left side shows a photo of the mother of the cat mentioned above, and the right side is a photo of an elephant I took at the Omaha Zoo. I wanted to make the image look as if my cat is about the same size as the elephant and as if it wants to fight the elephant.</h4>
                                 <div class="row gx-2 gy-2 mb-4">
                                     <div class="col-3">
                                         <img src="media/part2/blend/fight_cat_leftdown.png" alt="Fighting Cat" style="width: 100%; height: 200px; object-fit: cover;">
@@ -335,7 +339,8 @@
                                     </div>
                                 </div>
 
-                                <h4>Cat and Dog Blend</h4>
+                                <h4>
+                                    The left side shows my grandfather's birthday cake, and the right side features a cat and a dog from my home. I wanted them to also celebrate the birthday together and share my grandfather's birthday cake.</h4>
                                 <div class="row gx-2 gy-2 mb-4">
                                     <div class="col-3">
                                         <img src="media/part2/blend/cake_rightdown.png" alt="Cake Right" style="width: 100%; height: 200px; object-fit: cover;">
@@ -355,7 +360,7 @@
                                     </div>
                                 </div>
 
-                                <h4>Blended Stacks</h4>
+                                <h4>This is the blending process of my favorite image, including all of their stacks.</h4>
                                 <div class="row gx-2 gy-2 mb-4">
                                     <div class="col-12 mb-4">
                                         <img src="media/part2/blend/stack1.png" alt="Blended Stack 1" style="width: 100%; height: 1000px; object-fit: contain;">
