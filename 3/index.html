@@ -1,0 +1,370 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Project 3 - Jason Yan</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="../assets/css/main.css" />
+    </head>
+    <body class="is-preload">
+        <!-- Header -->
+        <section id="header">
+            <header>
+                <p id="logo"><a href="../index.html">Back to Main Page</a></p>
+                <h2>CS 180 Project 3</h2>
+            </header>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#part1">Part 1: Defining Correspondences</a></li>
+                    <li><a href="#part2">Part 2: Computing the "Mid-way Face"</a></li>
+                    <li><a href="#part3">Part 3: The Morph Sequence</a></li>
+                    <li><a href="#part4">Part 4: The "Mean Face" of a Population</a></li>
+                    <li><a href="#part5">Part 5: Caricatures: Extrapolating from the mean</a></li>
+                    <li><a href="#part6">Bells and Whistles</a></li>
+                </ul>
+            </nav>
+            <footer>
+                <ul class="icons">
+                    <li><a href="https://zhengxuyan.github.io" class="icon solid fa-globe"><span class="label">Website</span></a></li>
+                    <li><a href="https://linkedin.com/in/zhengxu-yan" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+                    <li><a href="https://github.com/ZhengxuYan" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                    <li><a href="mailto:jason.yan@berkeley.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                </ul>
+            </footer>
+        </section>
+
+        <!-- Wrapper -->
+        <div id="wrapper">
+            <!-- Main -->
+            <div id="main">
+                <!-- Overview -->
+                <section id="overview">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Project 3: Face Morphing</h3>
+                        </header>
+                        <p>This project involves producing a morph animation of my face into another person's face, computing the mean face of a population, and extrapolating from the mean to create a caricature.</p>
+                    </div>
+                </section>
+
+                <!-- Part 1 -->
+                <section id="part1">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 1: Defining Correspondences</h3>
+                        </header>
+                        <p>First, I cropped photos of myself and my friend Alice to the same size, then identified corresponding points on our faces using online tools. These points were chosen to capture our facial features and contours accurately.</p>
+                        <div class="row">
+                            <div class="col-6"><img src="media/part1/part1.png" alt="Jason and Alice" /></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 2 -->
+                <section id="part2">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 2: Computing the "Mid-way Face"</h3>
+                        </header>
+                        <p>In this part, like the previous one, I started by averaging the corresponding points of our two images to obtain the average shape. Then, I wrote a computeAffine function to calculate the matrix required to transform one triangle into another. Next, I used the inverse of this matrix along with a polygon function, which allowed me to warp the faces of both of us to the average shape by providing all the points within the triangle. Finally, I performed a cross-dissolve on the two warped images to blend them together.</p>
+                        <div class="row">
+                            <div class="col-4 col-12-medium">
+                                <span class="image fit"><img src="media/part2/jason.JPG" alt="Jason's Face" /></span>
+                                <p class="caption">Jason's Face</p>
+                            </div>
+                            <div class="col-4 col-12-medium">
+                                <span class="image fit"><img src="media/part2/midway.jpg" alt="Mid-way Face" /></span>
+                                <p class="caption">Mid-way Face</p>
+                            </div>
+                            <div class="col-4 col-12-medium">
+                                <span class="image fit"><img src="media/part2/alice.JPG" alt="Alice's Face" /></span>
+                                <p class="caption">Alice's Face</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 3 -->
+                <section id="part3">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 3: The Morph Sequence</h3>
+                        </header>
+                        <p>
+                            I used the function from Part 2, but gradually increased the warp_frac and dissolve_frac, which control the amount of warping and cross-dissolving, respectively. Both parameters were slowly incremented from 0 to 1. In the end, I created a GIF consisting of 45 frames, with each frame displayed for 30 milliseconds, to show the entire morph sequence.
+                        </p>
+                        <div class="col-4 col-12-medium">
+                            <div class="image fit">
+                                <img src="media/part3/part3.gif" alt="Morph Sequence" style="max-width: 50%;" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 4 -->
+                <section id="part4">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 4: The "Mean Face" of a Population</h3>
+                        </header>
+                        <p>In this part, I used the Danes Dataset provided in the instructions, which includes photos of thirty Danish men and seven Danish women. The first thing I did was to parse the labeled points from the .asf files and then average them to obtain the mean shape.</p>
+        
+                        <!-- Single row of images -->
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <span class="image fit"><img src="media/part4/mean_shapes.png" alt="Population Mean" /></span>
+                            </div>
+                        </div>
+
+                        <p>Next, I warped each face into the mean shape, and here are some examples.</p>
+                        <!-- Rows of pairs of images -->
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/05-1m.bmp" alt="Face Pair 1A" /></span>
+                                        <p class="caption" style="text-align: center;">Original</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/05-1m-mean.bmp" alt="Face Pair 1B" /></span>
+                                        <p class="caption" style="text-align: center;">Warped to Average</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/08-1f.bmp" alt="Face Pair 2A" /></span>
+                                        <p class="caption" style="text-align: center;">Original</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/08-1f-mean.bmp" alt="Face Pair 2B" /></span>
+                                        <p class="caption" style="text-align: center;">Warped to Average</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/10-1m.bmp" alt="Face Pair 3A" /></span>
+                                        <p class="caption" style="text-align: center;">Original</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/10-1m-mean.bmp" alt="Face Pair 3B" /></span>
+                                        <p class="caption" style="text-align: center;">Warped to Average</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/28-1m.bmp" alt="Face Pair 4A" /></span>
+                                        <p class="caption" style="text-align: center;">Original</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/28-1m-mean.bmp" alt="Face Pair 4B" /></span>
+                                        <p class="caption" style="text-align: center;">Warped to Average</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p>I then take average of all the warped faces to get the mean face.</p>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <span class="image fit"><img src="media/part4/mean_faces.png" alt="Trio 1" /></span>
+                        </div>
+
+                        <p>Finally, I warped my face into the mean danes face, and vice versa. And I also morphed my face into the mean danes male face, and vice versa.</p>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/morph_jason_to_danes.jpg" alt="morph_jason_to_danes" /></span>
+                                        <p class="caption" style="text-align: center;">Jason to Danes</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/morph_danes_to_jason.jpg" alt="morph_danes_to_jason" /></span>
+                                        <p class="caption" style="text-align: center;">Danes to Jason</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/morph_jason_to_danes_male.jpg" alt="morph_jason_to_danes_male" /></span>
+                                        <p class="caption" style="text-align: center;">Jason to Danes Male</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part4/morph_danes_male_to_jason.jpg" alt="morph_danes_male_to_jason" /></span>
+                                        <p class="caption" style="text-align: center;">Danes Male to Jason</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- Part 5 -->
+                <section id="part5">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 5: Caricatures: Extrapolating from the mean</h3>
+                        </header>
+                        <p>In this section, I created caricatures by extrapolating from the population mean established in the previous part. Below are the results of exaggerating either my own facial features (alpha > 1) or the average facial features (alpha < 0).</p>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part5/morph_jason_to_danes_extrapolate_1.5.jpg" alt="Caricature 1" /></span>
+                                        <p class="caption" style="text-align: center;">Jason (alpha = 1.5)</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/part5/morph_jason_to_danes_extrapolate_-0.3.jpg" alt="Caricature 2" /></span>
+                                        <p class="caption" style="text-align: center;">Jason (alpha = -0.3)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bells and Whistles -->
+                <section id="part6">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Bells and Whistles</h3>
+                        </header>
+                        <h4>Bells and Whistles 1: Change of Gender</h4>
+                        <p>
+                            For this experiment, I started by sourcing an image of the average Chinese male face from
+                            <a href="https://pmsol3.wordpress.com/2009/10/10/world-of-facial-averages-east-southeast-asia-pacific-islander/" target="_blank">this website</a>.
+                            I then cropped my friend Alice's photo to match the size of this image. Using the same method as before,
+                            I identified corresponding points between these two images. I experimented with different techniques: warping only the shape,
+                            only using cross-dissolve, and combining both. I discovered that a warp fraction of 0.7 and a dissolve fraction of 0.7
+                            provided the most visually appealing results.
+                        </p>                
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-4 col-6-medium">
+                                        <span class="image fit"><img src="media/BW/alice_scaled.jpg" alt="Bells and Whistles 1" style="max-width: 80%; margin: auto;" /></span>
+                                        <p class="caption" style="text-align: center;">Alice</p>
+                                    </div>
+                                    <div class="col-4 col-6-medium">
+                                        <span class="image fit"><img src="media/BW/avg_chinese_scaled.jpg" alt="Bells and Whistles 1" style="max-width: 80%; margin: auto;" /></span>
+                                        <p class="caption" style="text-align: center;">Average Chinese Male</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-4 col-6-medium">
+                                        <span class="image fit"><img src="media/BW/alice_chinese_male.jpg" alt="Bells and Whistles 1" style="max-width: 80%; margin: auto;" /></span>
+                                        <p class="caption" style="text-align: center;">Alice to Avg Chinese Male (Both Warp and Dissolve)</p>
+                                    </div>
+                                    <div class="col-4 col-6-medium">
+                                        <span class="image fit"><img src="media/BW/alice_chinese_male_shape.jpg" alt="Bells and Whistles 1" style="max-width: 80%; margin: auto;" /></span>
+                                        <p class="caption" style="text-align: center;">Alice to Avg Chinese Male (Warp Only)</p>
+                                    </div>
+                                    <div class="col-4 col-6-medium">
+                                        <span class="image fit"><img src="media/BW/alice_chinese_male_appearance.jpg" alt="Bells and Whistles 1" style="max-width: 80%; margin: auto;" /></span>
+                                        <p class="caption" style="text-align: center;">Alice to Avg Chinese Male (Dissolve Only)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>Bells and Whistles 2: PCA and Eigenfaces</h4>
+                        <p>Initially, I flattened the entire dataset of Danish faces and applied Principal Component Analysis (PCA) to extract eigenfaces. I then attempted to generate random faces by sampling from these eigenfaces. Due to the images in the dataset not being aligned, the results were not very clear. However, the essential concept is that if the faces were aligned, we could use this method to create random faces or blend specific facial features based on eigenfaces to produce customized appearances.</p>
+                        
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <span class="image fit"><img src="media/BW/danes_eigenfaces.png" alt="Danes Eigenfaces" /></span>
+                                <p class="caption" style="text-align: center;">Danes Eigenfaces</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <span class="image fit"><img src="media/BW/danes_eigenfaces_male.png" alt="Danes Male Eigenfaces" /></span>
+                                <p class="caption" style="text-align: center;">Danes Male Eigenfaces</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <span class="image fit"><img src="media/BW/danes_eigenfaces_female.png" alt="Danes Female Eigenfaces" /></span>
+                                <p class="caption" style="text-align: center;">Danes Female Eigenfaces</p>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-4 col-12-medium">
+                                <span class="image fit"><img src="media/BW/sampled_face.png" alt="Sampled Face" /></span>
+                                <p class="caption" style="text-align: center;">Sampled Face</p>
+                            </div>
+                            <div class="col-4 col-12-medium">
+                                <span class="image fit"><img src="media/BW/sampled_face_male.png" alt="Sampled Male Face" /></span>
+                                <p class="caption" style="text-align: center;">Sampled Male Face</p>
+                            </div>
+                            <div class="col-4 col-12-medium">
+                                <span class="image fit"><img src="media/BW/sampled_face_female.png" alt="Sampled Female Face" /></span>
+                                <p class="caption" style="text-align: center;">Sampled Female Face</p>
+                            </div>
+                        </div>
+
+                        <h4>Bells and Whistles 3: Music Video</h4>
+                        <p>To better illustrate the face morphing process, I've created a music video for myself using my images when I was 1 month, 3 years, 13 years, 17 years, and 21 years old. Between every two images, I used 35 images for the transition.</p>
+                
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="video-container">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/3in6Vb-n3so" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <style>
+                            .video-container {
+                                position: relative;
+                                padding-bottom: 56.25%;
+                                height: 0;
+                                overflow: hidden;
+                                max-width: 100%;
+                            }
+                            .video-container iframe {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                            }
+                        </style>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery.scrollex.min.js"></script>
+        <script src="../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../assets/js/browser.min.js"></script>
+        <script src="../assets/js/breakpoints.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <script src="../assets/js/main.js"></script>
+    </body>
+</html>
