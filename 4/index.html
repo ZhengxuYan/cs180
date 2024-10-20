@@ -1,0 +1,367 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Project 4 - Jason Yan</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="../assets/css/main.css" />
+    </head>
+    <body class="is-preload">
+        <!-- Header -->
+        <section id="header">
+            <header>
+                <p id="logo"><a href="../index.html">Back to Main Page</a></p>
+                <h2>CS 180 Project 4</h2>
+            </header>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#part1">Part A1: Shoot the Pictures</a></li>
+                    <li><a href="#part2">Part A2: Recover Homographies</a></li>
+                    <li><a href="#part3">Part A3: Warp the Images</a></li>
+                    <li><a href="#part4">Part A4: Image Rectification</a></li>
+                    <li><a href="#part5">Part A5: Blending the Images into a Mosaic</a></li>
+                </ul>
+            </nav>
+            <footer>
+                <ul class="icons">
+                    <li><a href="https://zhengxuyan.github.io" class="icon solid fa-globe"><span class="label">Website</span></a></li>
+                    <li><a href="https://linkedin.com/in/zhengxu-yan" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+                    <li><a href="https://github.com/ZhengxuYan" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                    <li><a href="mailto:jason.yan@berkeley.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                </ul>
+            </footer>
+        </section>
+
+        <!-- Wrapper -->
+        <div id="wrapper">
+            <!-- Main -->
+            <div id="main">
+                <!-- Overview -->
+                <section id="overview">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Project 4: Image Mosaicing</h3>
+                        </header>
+                        <p>
+                            In this project, we initially took many photos, each set containing a significant portion that 
+                            overlaps with others. We can use these overlapping sections to stitch the photos together, 
+                            forming a larger image. To achieve this, we need to first identify the corresponding points 
+                            between these photos and then perform projection warping. We can use this warping technique
+                            for other purposes, such as image rectification, which projects an object that is not facing 
+                            forward in the photo to appear as if it is facing forward, allowing us to view the object from 
+                            different angles. Afterwards, we can also use blending to combine many photos into one larger image.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 1 -->
+                <section id="part1">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part A1: Shoot the Pictures</h3>
+                        </header>
+                        <p>
+                            First, I took these sets of photos simultaneously. I also made sure to keep the center of projection (COP) fixed, which ensures that the transforms between them are projective. Additionally, each set of photos has a large overlapping area, allowing us to use these overlapping sections to stitch the photos together and form a larger image.
+                        </p>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <p>These are the photos I took in my apartment: </p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/apt_left.jpg" alt="Apt Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Left</p> -->
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/apt_right.jpg" alt="Apt Right" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Right</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <p>These are the photos of the Bay St Mall: </p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/bayst_left.jpg" alt="Bayst Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Bay St Left</p> -->
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/bayst_right.jpg" alt="Bayst Right" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Bay St Right</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <p>These are the photos I took in the hallway: </p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/hall_left.jpg" alt="Hall Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Hall Left</p> -->
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/hall_right.jpg" alt="Hall Right" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Hall Right</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 2 -->
+                <section id="part2">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 2: Recover Homographies</h3>
+                        </header>
+                        <p>Before implementing warping, we need to first identify corresponding points between the images. Since there are many overlapping areas in the two pictures, I found objects that appear in both images and used the 
+                            tool from <a href="https://cal-cs180.github.io/fa23/hw/proj3/tool.html" target="_blank">Project 3</a> to mark their corresponding points.</p>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/apt_corr.png" alt="Apt Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Left</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/bayst_corr.png" alt="Bayst Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Bay St Left</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/hall_corr.png" alt="Hall Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Hall Left</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            Before warping, we need to recover the parameters of the transformation between each pair of images. Our transformation here is a homography: \( p' = Hp \), where \( H \) is a 3x3 matrix with 8 degrees of freedom (scaling factor set to 1). According to the formula from Lecture 11, slide 42:
+                            \[
+                            \begin{bmatrix}
+                            a & b & c \\
+                            d & e & f \\
+                            g & h & 1
+                            \end{bmatrix}
+                            \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}
+                            =
+                            \begin{bmatrix} wx' \\ wy' \\ w \end{bmatrix}
+                            \]
+                            As long as we have more than 8 \((x,y,x',y')\) point pairs, we can solve for \(H\), like this:
+                            \[
+                            \begin{align*}
+                            &\begin{cases}
+                            ax + by + c = wx' \\
+                            dx + ey + f = wy' \\
+                            gx + hy + 1 = w
+                            \end{cases}
+                            \\
+                            \implies
+                            &\begin{cases}
+                            ax + by + c - gxx' - hyx' = x' \\
+                            dx + ey + f - gxy' - hyy' = y'
+                            \end{cases}
+                            \\
+                            \implies
+                            &\begin{bmatrix}
+                            x & y & 1 & 0 & 0 & 0 & -xx' & -yx' \\
+                            0 & 0 & 0 & x & y & 1 & -xy' & -yy' \\
+                            \end{bmatrix}
+                            \begin{bmatrix} a \\ b \\ c \\ d \\ e \\ f \\ g \\ h \end{bmatrix}
+                            =
+                            \begin{bmatrix} x' \\ y' \end{bmatrix}
+                            \end{align*}
+                            \]
+                            Specifically, we stack all the \((x,y,x',y')\) point pairs into matrix \(A\) layer by layer, and stack all the \(x'\) and \(y'\) into matrix \(B\) layer by layer. Then we used `np.linalg.lstsq` to solve this linear equation system to get the least squares solution. Reshape this solution into a 3x3 matrix, and that's our \(H\).
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 3 -->
+                <section id="part3">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 3: Warp the Images</h3>
+                        </header>
+                        <p>After calculating the homographies, we utilize them to warp the images effectively. Specifically, we use the homography matrix 
+                            𝐻 to re-project one image onto the canvas of another. This process involves creating a coordinate grid for the destination image 
+                            and then transforming each coordinate through the homography to find the corresponding points in the source image. Bilinear 
+                            interpolation is then applied to fill in the pixel values in the destination image.
+                            Here's how this works in practice: Initially, we determine the bounding box of the final image by applying the homography to the four corners of 
+                            the first image to project it onto the second. This outlines the area where the final image will reside. We then use 
+                            scipy.interpolate.RegularGridInterpolator to interpolate the pixel values from the source image and map them onto the 
+                            destination image. Because the coordinates after warping may be negative, we will shift this grid to ensure all coordinates are positive. 
+                            Also, we can use this shift for alignment later.</p>
+                            <div class="row">
+                                <div class="col-12 col-12-medium">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="image fit"><img src="media/partA_images/apt_corr.png" alt="Apt Left" /></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="image fit"><img src="media/partA_images/warped_apt_left.png" alt="Warped Apt Left" /></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </section>
+
+                <!-- Part 4 -->
+                <section id="part4">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 4: Image Rectification</h3>
+                        </header>
+                        <p>
+                            Using the same method, we can achieve Image Rectification. First, I took several photos that contain rectangular objects, but they are not necessarily rectangular in the photos. First, we still need to mark the rectangular objects in these photos. I marked four points on each rectangular object, but since we only have one photo and we just want to rectify it, the corresponding points for the second image are designed by myself, such as (0,0), (0,1), (1,0), and (1,1). Then, using the method described above, we calculate the homography matrix and perform the warp. This way, we can rectify any image or view the object from different angles.
+                        </p>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/cs189_rectified.png" alt="Rectify CS189" /></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/monitor_rectified.png" alt="Rectify Monitor" /></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 5 -->
+                <section id="part5">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part A5: Crafting the Image Mosaic</h3>
+                        </header>
+                        <p>
+                            After warping the images, we can blend them into a mosaic. Specifically, we can use the homography matrix to warp the images onto a canvas of another image, and then we can use the shift to align the images. After warping, we can use the blending technique to combine the images into one larger image.
+                            Here's how we can do this:
+                        </p>
+                        <ol>
+                            <li><strong>Warping and Aligning:</strong> We begin by applying a homography matrix to the first image to warp it appropriately. This results in a transformed image and an alpha mask. We also track how much we need to shift this image to align perfectly with the second image.</li>
+                            <li><strong>Determining Mosaic Dimensions:</strong> Next, we calculate the dimensions needed for the mosaic canvas to ensure that it can accommodate both images fully without any clipping.</li>
+                            <li><strong>Image Placement:</strong> Each image is positioned on its designated canvas. Adjustments based on previously calculated shifts are made to align them perfectly.</li>
+                            <li><strong>Distance Transformation:</strong> A Euclidean distance transform is applied to both masks. This transform measures the distance of each pixel to the nearest boundary, influencing the blending behavior by giving less weight to boundary pixels.</li>
+                            <li><strong>Two-band Blending:</strong> The images undergo a blurring process to separate high and low-frequency details. Low-resolution components are blended using weighted averaging based on the alpha masks (we use distance transformation as the alpha mask).
+                                High-resolution components are blended using a decision-based approach where pixels from the image with the higher distance transform value at each location are chosen.
+                            </li>
+                        </ol>
+                        <p>
+                            These are the results of the mosaic:
+                        </p>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/apt_left.jpg" alt="Apt Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Apt Left</p> -->
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/apt_right.jpg" alt="Apt Right" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Apt Right</p> -->
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/apt_masks.png" alt="Apt Masks" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Apt Masks</p> -->
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/apt_res.png" alt="Apt Res" /></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/apt_mosaic.png" alt="Apt Mosaic" /></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/bayst_left.jpg" alt="Bayst Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Bay St Left</p> -->
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/bayst_right.jpg" alt="Bayst Right" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Bay St Right</p> -->
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/bayst_masks.png" alt="Bayst Masks" /></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/bayst_res.png" alt="Bayst Res" /></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/bayst_mosaic.png" alt="Bayst Mosaic" /></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-12-medium">
+                                <p>These are the photos I took in the hallway: </p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/hall_left.jpg" alt="Hall Left" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Hall Left</p> -->
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="image fit"><img src="media/partA_images/hall_right.jpg" alt="Hall Right" /></span>
+                                        <!-- <p class="caption" style="text-align: center;">Hall Right</p> -->
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/hall_masks.png" alt="Hall Masks" /></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/hall_res.png" alt="Hall Res" /></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/partA_images/hall_mosaic.png" alt="Hall Mosaic" /></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>                     
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery.scrollex.min.js"></script>
+        <script src="../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../assets/js/browser.min.js"></script>
+        <script src="../assets/js/breakpoints.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <script src="../assets/js/main.js"></script>
+        <!-- Load MathJax -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
