@@ -21,6 +21,12 @@
                     <li><a href="#part3">Part A3: Warp the Images</a></li>
                     <li><a href="#part4">Part A4: Image Rectification</a></li>
                     <li><a href="#part5">Part A5: Blending the Images into a Mosaic</a></li>
+                    <li><a href="#part6">Part B1: Harris Interest Point Detector</a></li>
+                    <li><a href="#part7">Part B2: ANMS</a></li>
+                    <li><a href="#part8">Part B3: Feature Descriptor Extraction</a></li>
+                    <li><a href="#part9">Part B4: Feature Matching</a></li>
+                    <li><a href="#part10">Part B5: RANSAC</a></li>
+                    <li><a href="#part11">Part B6: Results</a></li>
                 </ul>
             </nav>
             <footer>
@@ -51,6 +57,18 @@
                             for other purposes, such as image rectification, which projects an object that is not facing 
                             forward in the photo to appear as if it is facing forward, allowing us to view the object from 
                             different angles. Afterwards, we can also use blending to combine many photos into one larger image.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part A Divider -->
+                <section id="partA-divider" style="padding: 1em 0;">
+                    <div class="container">
+                        <header class="major" style="margin-bottom: 1em;">
+                            <h2 style="text-align: center; border-bottom: 2px solid #888; padding-bottom: 0.5em; font-size: 1.5em;">Part A: Manual Feature Selection and Image Mosaicing</h2>
+                        </header>
+                        <p style="text-align: center; margin: 0;">
+                            In this part, we implement image mosaicing using manual feature selection to understand the fundamental concepts of homography and image warping.
                         </p>
                     </div>
                 </section>
@@ -116,7 +134,7 @@
                 <section id="part2">
                     <div class="container">
                         <header class="major">
-                            <h3>Part 2: Recover Homographies</h3>
+                            <h3>Part A2: Recover Homographies</h3>
                         </header>
                         <p>Before implementing warping, we need to first identify corresponding points between the images. Since there are many overlapping areas in the two pictures, I found objects that appear in both images and used the 
                             tool from <a href="https://cal-cs180.github.io/fa23/hw/proj3/tool.html" target="_blank">Project 3</a> to mark their corresponding points.</p>
@@ -196,7 +214,7 @@
                 <section id="part3">
                     <div class="container">
                         <header class="major">
-                            <h3>Part 3: Warp the Images</h3>
+                            <h3>Part A3: Warp the Images</h3>
                         </header>
                         <p>After calculating the homographies, we utilize them to warp the images effectively. Specifically, we use the homography matrix 
                             𝐻 to re-project one image onto the canvas of another. This process involves creating a coordinate grid for the destination image 
@@ -228,7 +246,7 @@
                 <section id="part4">
                     <div class="container">
                         <header class="major">
-                            <h3>Part 4: Image Rectification</h3>
+                            <h3>Part A4: Image Rectification</h3>
                         </header>
                         <p>
                             Using the same method, we can achieve Image Rectification. First, I took several photos that contain rectangular objects, but they are not necessarily rectangular in the photos. First, we still need to mark the rectangular objects in these photos. I marked four points on each rectangular object, but since we only have one photo and we just want to rectify it, the corresponding points for the second image are designed by myself, such as (0,0), (0,1), (1,0), and (1,1). Then, using the method described above, we calculate the homography matrix and perform the warp. This way, we can rectify any image or view the object from different angles.
@@ -348,7 +366,301 @@
                             </div>
                         </div>
                     </div>
-                </section>                     
+                </section>
+
+                <!-- Part B Divider -->
+                <section id="partB-divider" style="padding: 1em 0;">
+                    <div class="container">
+                        <header class="major" style="margin-bottom: 1em;">
+                            <h2 style="text-align: center; border-bottom: 2px solid #888; padding-bottom: 0.5em; font-size: 1.5em;">Part B: Automatic Feature Detection and Matching</h2>
+                        </header>
+                        <p style="text-align: center; margin: 0;">
+                            In this part, we implement automatic feature detection and matching to create image mosaics without manual point selection.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 6 -->
+                <section id="part6">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part B1: Harris Interest Point Detector</h3>
+                        </header>
+                        <p>
+                            Firstly, in order to find the interest points, we would like to focus on the "corners" of the image. To find these corners, we use the Harris interest point detector, which identifies points where the image has strong gradients in multiple directions. Using the implementation from <a href="https://inst.eecs.berkeley.edu/~cs180/fa24/hw/proj4/harris.py">harris.py</a>, we
+                            set σ=1 for the Gaussian smoothing and min_distance=1 to make the detected peaks to be at least one pixel apart. The function returns both the Harris response values (h-values) for each pixel and the coordinates of detected interest points. These points represent locations in the image where there are significant changes in intensity in multiple directions, making them good candidates for feature matching.
+                            Here is the Harris Matrix and the detected interest points for one of the images:
+                        </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/hall_h.png" alt="Harris Matrix" /></span>
+                            </div>
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/hall_harris.png" alt="Harris Interest Points" /></span>
+                                <p style="text-align: center;">Number of Harris corners: 11607(Left), 11583(Right)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 7 -->
+                <section id="part7">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part B2: Adaptive Non-Maximum Suppression (ANMS)</h3>
+                        </header>
+                        <p>
+                            After applying the Harris corner detector, we often get too many interest points that are heavily clustered. This clustering can be problematic as it provides redundant information and doesn't give us a good spatial distribution of features across the image. To address this, we implement Adaptive Non-Maximum Suppression (ANMS) based on the <a href="https://inst.eecs.berkeley.edu/~cs180/fa24/hw/proj4/Papers/MOPS.pdf">Multi-Image Matching using Multi-Scale Oriented Patches</a> paper.
+                        </p>
+                        <p>
+                            The ANMS algorithm works as follows:
+                        </p>
+                        <ol>
+                            <li>For each interest point p, we find its "suppression radius" r, which is:
+                                <ul>
+                                    <li>The minimum distance to any other point q where H(q) > c_robust * H(p)</li>
+                                    <li>Here, H(p) is the Harris response at point p</li>
+                                    <li>c_robust (set to 0.9) helps ensure robustness to noise</li>
+                                </ul>
+                            </li>
+                            <li>We use a k-d tree data structure to efficiently find nearby points within a radius of 24 pixels</li>
+                            <li>Points with larger suppression radii are better because they are far from stronger interest points</li>
+                            <li>Finally, we select the top 100 points with the largest suppression radii</li>
+                        </ol>
+                        <p>
+                            This approach ensures that:
+                        </p>
+                        <ul>
+                            <li>Selected points are well-distributed across the image</li>
+                            <li>We maintain only the strongest interest points in any local region</li>
+                            <li>The final set of points is more suitable for feature matching</li>
+                        </ul>
+                        <p></p>
+                            Here is the ANMS results for one of the images:
+                        </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/hall_anms.png" alt="ANMS Results" /></span>
+                                <p style="text-align: center;">Number of Interest Points After ANMS: 100</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 8 -->
+                <section id="part8">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part B3: Feature Descriptor Extraction</h3>
+                        </header>
+                        <p>
+                            For each interest point, we extract a feature descriptor that captures the local image appearance according to the paper. We only consider the axis-aligned features according to the instructions. The process is as follows:
+                        </p>
+                        <ol>
+                            <li>Extract a 40×40 pixel patch centered at each interest point</li>
+                            <li>Apply Gaussian blur (σ=2) to avoid aliasing</li>
+                            <li>Subsample to 8×8 patches (spacing = 5 pixels)</li>
+                            <li>Normalize and flatten the descriptor (μ=0, σ=1):
+                                <ul>
+                                    <li>Subtract mean</li>
+                                    <li>Divide by standard deviation</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p></p>
+                            Here is the extracted feature patches of the hallway image before normalization:
+                        </p>
+                        <div class="row">
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partB_images/hall_features.png" alt="Feature Descriptors" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 9 -->
+                <section id="part9">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part B4: Feature Matching</h3>
+                        </header>
+                        <p>
+                            With features extracted, the next step is to match features together between two images to form correspondences. Our matching process uses several techniques to ensure accuracy:
+                        </p>
+                        <ol>
+                            <li>Distance Computation:
+                                <ul>
+                                    <li>Compute pairwise distances between all feature descriptors from both images</li>
+                                    <li>Create two distance matrices for bidirectional matching</li>
+                                </ul>
+                            </li>
+                            <li>Outlier Reduction:
+                                <ul>
+                                    <li>Apply Lowe's ratio test: for each feature, find its two closest matches and compare their distances</li>
+                                    <li>Only accept matches where closest/second-closest distance ratio is below 0.8</li>
+                                    <li>Implement cross-checking: ensure matches are reciprocal between both images</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p>
+                            Below is an illustration of the feature matching results. The visualization shows matches between the two images, with red points in the left image connected to corresponding blue points in the right image via green lines. Each line represents a match that passed both the ratio test and cross-checking criteria.
+                        </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/feature_match0.8.png" alt="Feature Match Results r = 0.8" /></span>
+                                <p style="text-align: center;">Feature matching with ratio threshold = 0.8</p>
+                            </div>
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/feature_match0.9.png" alt="Feature Match Results r = 0.9" /></span>
+                                <p style="text-align: center;">Feature matching with ratio threshold = 0.9</p>
+                            </div>
+                        </div>
+                        <p>
+                            We can see that when the ratio threshold is larger, we get more matches, but also more outliers and incorrect matches. So I choose the ratio threshold = 0.8 for the rest of the experiments.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 10 -->
+                <section id="part10">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part B5: RANSAC</h3>
+                        </header>
+                        <p>
+                            While Lowe's ratio test helps filter out many incorrect matches, some mismatched pairs typically remain. These incorrect correspondences pose a significant problem because the least-squares method is sensitive to outliers - even a few incorrect matches can significantly distort the computed homography matrix.
+                        </p>
+                        <p>
+                            To solve this issue, we implement RANSAC (Random Sample Consensus), an iterative method that works by repeatedly selecting small random subsets of matches (size of 4) to compute potential homographies. For each iteration, we track how many other point pairs align well with the current transformation (determined based on whether the difference in distance is below a certain threshold). Through many iterations, we identify the homography that best explains the majority of the matches, effectively filtering out the outlier pairs that don't fit the dominant geometric relationship between the images.
+                        </p>
+                        <p>
+                            The RANSAC algorithm implementation involves:
+                        </p>
+                        <ol>
+                            <li>Randomly selecting 4 matching pairs</li>
+                            <li>Computing homography H from these pairs</li>
+                            <li>Transforming all points using H and counting inliers (points with transformation error < threshold)</li>
+                            <li>Repeating for many iterations (2,000,000 in our implementation)</li>
+                            <li>Keeping the H that produces the most inliers</li>
+                        </ol>
+                        <p>
+                            The visualizations below show the matches that RANSAC identified as reliable. The red points in the left image are connected to their matching blue points in the right image via green lines. These connections represent the inlier matches that RANSAC determined were consistent with the best-fitting homography transformation. And the red lines are the incorrect matches that RANSAC filtered out.
+                        </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/RANSAC5.png" alt="RANSAC Results threshold = 5" /></span>
+                                <p style="text-align: center;">RANSAC results with threshold = 5</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 11 -->
+                <section id="part11">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part B6: Results</h3>
+                        </header>
+                        <p>
+                            Using the automated feature detection and matching pipeline, we can create image mosaics without manual point selection. Below are the results for each photo set:
+                        </p>
+                        
+                        <!-- Apartment Photos -->
+                        <h4>Apartment Photo Set</h4>
+                        <div class="row">
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/apt_left.jpg" alt="Apt Left" /></span>
+                                <p style="text-align: center;">Original Left Image</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/apt_right.jpg" alt="Apt Right" /></span>
+                                <p style="text-align: center;">Original Right Image</p>
+                            </div>
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/apt_ransac.png" alt="Apt RANSAC" /></span>
+                                <p style="text-align: center;">RANSAC Results</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partB_images/apt_mosaic(automatic).png" alt="Apt Final Mosaic (Automatic)" /></span>
+                                <p style="text-align: center;">Apartment Final Mosaic (Automatic)</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/apt_mosaic.png" alt="Apt Final Mosaic (Manual)" /></span>
+                                <p style="text-align: center;">Apartment Final Mosaic (Manual)</p>
+                            </div>
+                        </div>
+
+                        <!-- Bay Street Photos -->
+                        <h4>Bay Street Photo Set</h4>
+                        <div class="row">
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/bayst_left.jpg" alt="Bayst Left" /></span>
+                                <p style="text-align: center;">Original Left Image</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/bayst_right.jpg" alt="Bayst Right" /></span>
+                                <p style="text-align: center;">Original Right Image</p>
+                            </div>
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/bayst_ransac.png" alt="Bayst RANSAC" /></span>
+                                <p style="text-align: center;">RANSAC Results</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partB_images/bayst_mosaic(automatic).png" alt="Bayst Final Mosaic (Automatic)" /></span>
+                                <p style="text-align: center;">Bay Street Final Mosaic (Automatic)</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/bayst_mosaic.png" alt="Bayst Final Mosaic (Manual)" /></span>
+                                <p style="text-align: center;">Bay Street Final Mosaic (Manual)</p>
+                            </div>
+                        </div>
+
+                        <!-- Hallway Photos -->
+                        <h4>Hallway Photo Set</h4>
+                        <div class="row">
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/hall_left.jpg" alt="Hall Left" /></span>
+                                <p style="text-align: center;">Original Left Image</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/hall_right.jpg" alt="Hall Right" /></span>
+                                <p style="text-align: center;">Original Right Image</p>
+                            </div>
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/RANSAC5.png" alt="Hall RANSAC" /></span>
+                                <p style="text-align: center;">RANSAC Results</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partB_images/hall_mosaic(automatic).png" alt="Hall Final Mosaic (Automatic)" /></span>
+                                <p style="text-align: center;">Hall Final Mosaic (Automatic)</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/partA_images/hall_mosaic.png" alt="Hall Final Mosaic (Manual)" /></span>
+                                <p style="text-align: center;">Hall Final Mosaic (Manual)</p>
+                            </div>
+                        </div>
+
+                        <p> We can take any images that have the same COP and use the same pipeline to create a mosaic for them. I just took the photos of my desk and created a mosaic for them automatically.</p>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/desk_ransac.png" alt="Desk RANSAC" /></span>
+                                <p style="text-align: center;">Desk RANSAC Results</p>
+                            </div>
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/desk_transform.png" alt="Desk Transform" /></span>
+                                <p style="text-align: center;">Desk Transform</p>
+                            </div>
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/desk_res.png" alt="Desk High Resolution and Low Resolution" /></span>
+                                <p style="text-align: center;">Desk High Resolution and Low Resolution</p>
+                            </div>
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/partB_images/desk_mosaic(automatic).png" alt="Desk Final Mosaic (Automatic)" /></span>
+                                <p style="text-align: center;">Desk Final Mosaic (Automatic)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 
