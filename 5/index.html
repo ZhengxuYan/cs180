@@ -1,0 +1,743 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Project 5 - Your Name</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="../assets/css/main.css" />
+    </head>
+    <body class="is-preload">
+        <!-- Header -->
+        <section id="header">
+            <header>
+                <p id="logo"><a href="../index.html">Back to Main Page</a></p>
+                <h2>CS 180 Project 5</h2>
+            </header>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#part0">Part 0: Setup</a></li>
+                    <!-- Part A sections -->
+                    <li><a href="#partA1-1">Part A1.1: Text to Image Generation</a></li>
+                    <li><a href="#partA1-2">Part A1.2: Denoising</a></li>
+                    <li><a href="#partA1-3">Part A1.3: Iterative Denoising</a></li>
+                    <li><a href="#partA1-4">Part A1.4: Random Image Generation</a></li>
+                    <li><a href="#partA1-5">Part A1.5: Classifier-Free Guidance</a></li>
+                    <li><a href="#partA1-6">Part A1.6: Image-to-Image Translation</a></li>
+                    <li><a href="#partA1-7">Part A1.7: Inpainting</a></li>
+                    <li><a href="#partA1-8">Part A1.8: Text-Conditioned Image-to-Image</a></li>
+                    <li><a href="#partA1-9">Part A1.9: Visual Anagrams & Hybrid Images</a></li>
+                    <!-- Part B sections -->
+                    <li><a href="#partB1">Part B1: UNet Implementation</a></li>
+                    <li><a href="#partB2">Part B2: Time-Conditioned UNet</a></li>
+                    <li><a href="#partB3">Part B3: Class-Conditioned UNet</a></li>
+                </ul>
+            </nav>
+            <footer>
+                <ul class="icons">
+                    <li><a href="your-website" class="icon solid fa-globe"><span class="label">Website</span></a></li>
+                    <li><a href="your-linkedin" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+                    <li><a href="your-github" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                    <li><a href="mailto:your-email" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                </ul>
+            </footer>
+        </section>
+
+        <!-- Main content sections -->
+        <div id="wrapper">
+            <div id="main">
+                <!-- Overview -->
+                <section id="overview">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Project 5: Diffusion Models</h3>
+                        </header>
+                        <p>
+                            This project explores diffusion models through two main components:
+                        </p>
+                        <ul>
+                            <li><strong>Part A:</strong> Experimenting with pretrained diffusion models (DeepFloyd IF)</li>
+                            <li><strong>Part B:</strong> Building and training a diffusion model from scratch for MNIST image generation</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Part 0 -->
+                <section id="part0">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part 0: Setup and Initial Testing</h3>
+                        </header>
+                        <p>
+                            To begin working with DeepFloyd IF, I first set up the necessary environment and access:
+                        </p>
+                        <ul>
+                            <li>Created a Hugging Face account and accepted the license for DeepFloyd/IF-I-XL-v1.0</li>
+                            <li>Generated and configured my Hugging Face Hub access token</li>
+                            <li>Downloaded the precomputed text embeddings to manage GPU memory constraints</li>
+                        </ul>
+
+                        <h4>Initial Generation Tests</h4>
+                        <p>
+                            Using a random seed of 42, I tested the model with three different prompts.
+                        </p>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/playing.png" alt="Playing (20 steps)" /></span>
+                                <p style="text-align: center;">Playing (20 inference steps)</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/playing100.png" alt="Playing (100 inference steps)" /></span>
+                                <p style="text-align: center;">Playing (100 inference steps)</p>
+                            </div>
+                        </div>
+
+                        <h4>Observations</h4>
+                        <p>
+                            When comparing different inference steps, I found that the quality of the generated images are generally consistent. Not much difference in quality was observed between 20 and 100 inference steps.
+                            The model showed high quality/consistency of results when responding to the provided prompts. Particularly noteworthy was the ability of the model to generate 
+                            diverse images that closely matched the textual descriptions provided in the prompts.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part A -->
+                <section id="partA-divider" style="padding: 1em 0;">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Part A: The Power of Diffusion Models</h3>
+                        </header>
+                        
+                        <!-- A1.1 -->
+                        <section id="partA1-1">
+                            <h3>A1.1: Implementing the Forward Process</h3>
+                            <p>
+                                In this section, I implemented the forward process of a diffusion model, which progressively adds noise to an image. 
+                                Starting with a clean test image of the Campanile (resized to 64x64), I applied increasing levels of noise at timesteps 
+                                t = 250, 500, and 750. As shown in the images below, the forward process gradually transforms the clear image into 
+                                increasingly noisy versions.
+                            </p>
+                            <div class="row">
+                                <div class="col-3">
+                                    <span class="image fit"><img src="media/test.png" alt="Step 1" /></span>
+                                    <p style="text-align: center;">Original Image</p>
+                                </div>
+                                <div class="col-3">
+                                    <span class="image fit"><img src="media/test_250.png" alt="Step 2" /></span>
+                                    <p style="text-align: center;">t = 250</p>
+                                </div>
+                                <div class="col-3">
+                                    <span class="image fit"><img src="media/test_500.png" alt="Step 3" /></span>
+                                    <p style="text-align: center;">t = 500</p>
+                                </div>
+                                <div class="col-3">
+                                    <span class="image fit"><img src="media/test_750.png" alt="Step 4" /></span>
+                                    <p style="text-align: center;">t = 750</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.2 -->
+                        <section id="partA1-2">
+                            <h3>A1.2: Classical Denoising</h3>
+                            <p>
+                                In this section, I explored classical denoising methods using Gaussian blur filtering on the noisy images 
+                                generated in the previous section. Despite attempting to optimize the blur parameters, the results demonstrate 
+                                the limitations of classical denoising approaches when dealing with significant noise levels.
+                            </p>
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/compare250.png" alt="Comparison t=250" /></span>
+                                    <p style="text-align: center;">Comparison at t=250</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/compare500.png" alt="Comparison t=500" /></span>
+                                    <p style="text-align: center;">Comparison at t=500</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/compare750.png" alt="Comparison t=750" /></span>
+                                    <p style="text-align: center;">Comparison at t=750</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.3 -->
+                        <section id="partA1-3">
+                            <h3>A1.3: One-Step Denoising</h3>
+                            <p>
+                                In this section, I implemented one-step denoising using a pretrained diffusion model. 
+                                The UNet model was used to estimate and remove noise from the images, conditioned on 
+                                timesteps and the text prompt "a high quality photo". The results demonstrate the 
+                                effectiveness of the learned denoising process compared to classical methods.
+                            </p>
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/1denoise250.png" alt="One-step Denoising t=250" /></span>
+                                    <p style="text-align: center;">One-step Denoising Results at t=250</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/1denoise500.png" alt="One-step Denoising t=500" /></span>
+                                    <p style="text-align: center;">One-step Denoising Results at t=500</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/1denoise750.png" alt="One-step Denoising t=750" /></span>
+                                    <p style="text-align: center;">One-step Denoising Results at t=750</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.4 -->
+                        <section id="partA1-4">
+                            <h3>A1.4: Iterative Denoising</h3>
+                            <p>
+                                This section demonstrates the iterative denoising process using strided timesteps. 
+                                Starting from a highly noisy image (t=690), we gradually denoise the image using 
+                                steps of size 30. The results show the progression of the denoising process and 
+                                compare it with one-step denoising and Gaussian blur methods. It is quite clear that the iterative denoising
+                                performs better than the one-step denoising and Gaussian blur methods.
+                            </p>
+                            
+                            <!-- First row with single image -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/denoise_step.png" alt="Denoising Progress" /></span>
+                                    <p style="text-align: center;">Iterative Denoising Progress (Every 5th Step)</p>
+                                </div>
+                            </div>
+
+                            <!-- Second row with three comparison images -->
+                            <div class="row">
+                                <div class="col-4">
+                                    <span class="image fit"><img src="media/denoise.png" alt="Iterative Result" /></span>
+                                    <p style="text-align: center;">Iterative Denoising Result</p>
+                                </div>
+                                <div class="col-4">
+                                    <span class="image fit"><img src="media/onestep.png" alt="One-step Result" /></span>
+                                    <p style="text-align: center;">One-step Denoising Result</p>
+                                </div>
+                                <div class="col-4">
+                                    <span class="image fit"><img src="media/gaussian.png" alt="Gaussian Result" /></span>
+                                    <p style="text-align: center;">Gaussian Blur Result</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.5 -->
+                        <section id="partA1-5">
+                            <h3>A1.5: Diffusion Model Sampling</h3>
+                            <p>
+                                In this section, we explore image generation from pure noise using the iterative denoising process. 
+                                Starting with random noise and using the prompt "a high quality photo", we demonstrate the model's 
+                                ability to generate images from scratch. Below are five samples generated using this method, showing
+                                the model's capability to create diverse outputs from random noise.
+                            </p>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/samples.png" alt="Generated Samples" /></span>
+                                    <p style="text-align: center;">Five Generated Samples from Random Noise</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.6 -->
+                        <section id="partA1-6">
+                            <h3>A1.6: Classifier-Free Guidance (CFG)</h3>
+                            <p>
+                                This section demonstrates the power of Classifier-Free Guidance (CFG) in improving 
+                                image generation quality. By combining conditional and unconditional noise estimates 
+                                with a guidance scale of 7, we achieve significantly better results compared to the 
+                                basic sampling method. Below are five samples generated using CFG, showing notably 
+                                improved image quality and coherence.
+                            </p>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/samples_cfg.png" alt="CFG Generated Samples" /></span>
+                                    <p style="text-align: center;">Five Generated Samples using CFG (Scale = 7)</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.7 -->
+                        <section id="partA1-7">
+                            <h3>A1.7: Image-to-image Translation</h3>
+                            <p>
+                                This section explores image-to-image translation using different i_start values. 
+                                Following the SDEdit algorithm, we add varying amounts of noise to images and 
+                                then denoise them using CFG. The results show how different starting indices 
+                                (noise levels) affect the balance between preserving the original image content 
+                                and allowing creative modifications. Below are the results for i_start values 
+                                [1, 3, 5, 7, 10, 20] using the prompt "a high quality photo".
+                            </p>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/translation.png" alt="Different Noise Levels" /></span>
+                                    <p style="text-align: center;">Image-to-image Translation Results with Different Starting Indices</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.7.1 -->
+                        <section id="partA1-7-1">
+                            <h3>A1.7.1: Editing Hand-Drawn and Web Images</h3>
+                            <p>
+                                This section explores how the image-to-image translation process works with non-realistic 
+                                source images. We experiment with both web-sourced images and hand-drawn sketches, 
+                                demonstrating how the model projects these onto the natural image manifold.
+                            </p>
+                            
+                            <!-- First row with three initial images -->
+                            <div class="row">
+                                <div class="col-4">
+                                    <span class="image fit"><img src="media/web.png" alt="Web Image Original" /></span>
+                                    <p style="text-align: center;">Original Web Image</p>
+                                </div>
+                                <div class="col-4">
+                                    <span class="image fit"><img src="media/draw1.png" alt="First Sketch Original" /></span>
+                                    <p style="text-align: center;">First Hand-drawn Sketch</p>
+                                </div>
+                                <div class="col-4">
+                                    <span class="image fit"><img src="media/draw2.png" alt="Second Sketch Original" /></span>
+                                    <p style="text-align: center;">Second Hand-drawn Sketch</p>
+                                </div>
+                            </div>
+
+                            <!-- Following rows with progression images -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/web_progress.png" alt="Web Image Progression" /></span>
+                                    <p style="text-align: center;">Web Image Translation Progress (Noise Levels [1, 3, 5, 7, 10, 20])</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/draw1_progress.png" alt="First Sketch Progression" /></span>
+                                    <p style="text-align: center;">First Sketch Translation Progress (Noise Levels [1, 3, 5, 7, 10, 20])</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/draw2_progress.png" alt="Second Sketch Progression" /></span>
+                                    <p style="text-align: center;">Second Sketch Translation Progress (Noise Levels [1, 3, 5, 7, 10, 20])</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.7.2 -->
+                        <section id="partA1-7-2">
+                            <h3>A1.7.2: Inpainting</h3>
+                            <p>
+                                In this section, I implemented inpainting following the RePaint paper's methodology. 
+                                The process involves using a binary mask to selectively preserve original image content 
+                                while generating new content in masked regions. For each denoising step, pixels outside 
+                                the edit mask are replaced with the original image (with appropriate noise added), while 
+                                pixels inside the mask are generated by the model.
+                            </p>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/mask1.png" alt="Campanile Inpainting Mask" /></span>
+                                    <p style="text-align: center;">Campanile Inpainting Mask</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/inpainting1.png" alt="Campanile Inpainting" /></span>
+                                    <p style="text-align: center;">Campanile Inpainting Example</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.7.3 -->
+                        <section id="partA1-7-3">
+                            <h3>A1.7.3: Text-Conditional Image-to-image Translation</h3>
+                            <p>
+                                This section explores text-guided image-to-image translation, combining SDEdit's projection 
+                                approach with text conditioning. Instead of using the generic "a high quality photo" prompt, 
+                                we use specific text prompts to guide the generation process. This allows for controlled 
+                                modifications while maintaining a balance between preserving the original image structure 
+                                and incorporating elements from the text description. Below are the results using different 
+                                noise levels [1, 3, 5, 7, 10, 20] with a specific text prompt.
+                            </p>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <span class="image fit"><img src="media/rocket.png" alt="Text-Guided Translation" /></span>
+                                    <p style="text-align: center;">Campanile (a rocket ship) (Noise Levels [1, 3, 5, 7, 10, 20])</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.8 -->
+                        <section id="partA1-8">
+                            <h3>A1.8: Visual Anagrams & Optical Illusions</h3>
+                            <p>
+                                In this section, I implemented visual anagrams using diffusion models to create images that reveal 
+                                different content when viewed upside down. The technique involves averaging noise estimates from two 
+                                different text prompts - one for the upright image and one for the inverted image. This creates 
+                                fascinating optical illusions where a single image contains two distinct interpretations depending 
+                                on its orientation.
+                            </p>
+
+                            <!-- First Anagram Pair -->
+                            <div class="row gtr-50">
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/painting1.png" alt="Campfire Scene" /></span>
+                                    <p style="text-align: center;">Oil Painting of People Around a Campfire (Upright)</p>
+                                </div>
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/painting2.png" alt="Old Man Portrait" /></span>
+                                    <p style="text-align: center;">Oil Painting of an Old Man (Flipped)</p>
+                                </div>
+                            </div>
+
+                            <!-- Second Anagram Pair -->
+                            <div class="row gtr-50">
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/man1.png" alt="Man with Hat" /></span>
+                                    <p style="text-align: center;">A Man Wearing a Hat (Upright)</p>
+                                </div>
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/man2.png" alt="Man Portrait" /></span>
+                                    <p style="text-align: center;">A Photo of a Man (Flipped)</p>
+                                </div>
+                            </div>
+
+                            <!-- Third Anagram Pair -->
+                            <div class="row gtr-50">
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/cost1.png" alt="Amalfi Coast" /></span>
+                                    <p style="text-align: center;">A Photo of the Amalfi Coast (Upright)</p>
+                                </div>
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/cost2.png" alt="Hipster Barista" /></span>
+                                    <p style="text-align: center;">A Photo of a Hipster Barista (Flipped)</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- A1.9 -->
+                        <section id="partA1-9">
+                            <h3>A1.9: Hybrid Images & Factorized Diffusion</h3>
+                            <p>
+                                This section demonstrates the creation of hybrid images using factorized diffusion. The technique 
+                                combines low frequencies from one noise estimate with high frequencies from another, creating images 
+                                that appear different when viewed from different distances. Using a Gaussian blur with kernel size 
+                                33 and sigma 2, we create compelling hybrid images that reveal different content based on viewing 
+                                distance.
+                            </p>
+
+                            <!-- First Hybrid Image -->
+                            <div class="row">
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/skull_waterfall.png" alt="Skull/Waterfall Hybrid" /></span>
+                                    <p style="text-align: center;">Hybrid Image: Skull (Far) / Waterfall (Close)</p>
+                                </div>
+                            </div>
+
+                            <!-- Second Hybrid Image -->
+                            <div class="row">
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/skull_coast.png" alt="Skull/Amalfi Coast Hybrid" /></span>
+                                    <p style="text-align: center;">Hybrid Image: Lithograph of a Skull (Far) / Amalfi Coast (Close)</p>
+                                </div>
+                            </div>
+
+                            <!-- Third Hybrid Image -->
+                            <div class="row">
+                                <div class="col-6">
+                                    <span class="image fit"><img src="media/coast.png" alt="Amalfi Coast/Dog Hybrid" /></span>
+                                    <p style="text-align: center;">Hybrid Image: Amalfi Coast (Far) / Dog (Close)</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+                <!-- Part B -->
+                <section id="partB-divider" style="padding: 1em 0;">
+                    <div class="container">
+                        <header class="major">
+                            <h2>Part B: Diffusion Models from Scratch</h2>
+                        </header>
+
+                        <!-- B1 -->
+                        <section id="partB1">
+                            <div class="container">
+                                <header class="major">
+                                    <h3>Part B1: UNet Implementation</h3>
+                                </header>
+                                
+                                <p>
+                                    In this section, I implemented a UNet architecture for single-step denoising. The model was trained 
+                                    to map noisy MNIST digits back to their clean versions using an L2 loss function. The UNet consists 
+                                    of downsampling and upsampling blocks with skip connections.
+                                </p>
+
+                                <!-- Noising Process -->
+                                <h4>1.2 Training Process</h4>
+                                <p>
+                                    The training process involved generating noisy versions of MNIST digits using various sigma values. 
+                                    Below shows the effect of different noise levels on the input images:
+                                </p>
+                                
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/add_noise.png" alt="Varying Noise Levels" /></span>
+                                        <p style="text-align: center;">Figure 3: Varying levels of noise on MNIST digits</p>
+                                    </div>
+                                </div>
+
+                                <!-- Training Progress -->
+                                <h4>Training Results</h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/training_losses1.png" alt="Training Loss" /></span>
+                                        <p style="text-align: center;">Figure 4: Training Loss Curve over 5 Epochs</p>
+                                    </div>
+                                </div>
+
+                                <!-- Results after 1st Epoch -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/compare1.png" alt="First Epoch Results" /></span>
+                                        <p style="text-align: center;">Figure 5: Results on test set after 1 epoch of training</p>
+                                    </div>
+                                </div>
+
+                                <!-- Results after 5th Epoch -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/compare5.png" alt="Fifth Epoch Results" /></span>
+                                        <p style="text-align: center;">Figure 6: Results on test set after 5 epochs of training</p>
+                                    </div>
+                                </div>
+
+                                <!-- Out-of-Distribution Testing -->
+                                <h4>1.2.2 Out-of-Distribution Testing</h4>
+                                <p>
+                                    To evaluate the model's generalization capabilities, we tested it on noise levels (σ) that weren't 
+                                    seen during training. The results below show how the model performs across different noise intensities:
+                                </p>
+
+                                <div class="row gtr-50">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-12 col-md-1-7">
+                                                <span class="image fit"><img src="media/sigma0.png" alt="Sigma 0.0" /></span>
+                                                <p style="text-align: center;">σ = 0.0</p>
+                                            </div>
+                                            <div class="col-12 col-md-1-7">
+                                                <span class="image fit"><img src="media/sigma02.png" alt="Sigma 0.2" /></span>
+                                                <p style="text-align: center;">σ = 0.2</p>
+                                            </div>
+                                            <div class="col-12 col-md-1-7">
+                                                <span class="image fit"><img src="media/sigma04.png" alt="Sigma 0.4" /></span>
+                                                <p style="text-align: center;">σ = 0.4</p>
+                                            </div>
+                                            <div class="col-12 col-md-1-7">
+                                                <span class="image fit"><img src="media/sigma05.png" alt="Sigma 0.5" /></span>
+                                                <p style="text-align: center;">σ = 0.5</p>
+                                            </div>
+                                            <div class="col-12 col-md-1-7">
+                                                <span class="image fit"><img src="media/sigma06.png" alt="Sigma 0.6" /></span>
+                                                <p style="text-align: center;">σ = 0.6</p>
+                                            </div>
+                                            <div class="col-12 col-md-1-7">
+                                                <span class="image fit"><img src="media/sigma08.png" alt="Sigma 0.8" /></span>
+                                                <p style="text-align: center;">σ = 0.8</p>
+                                            </div>
+                                            <div class="col-12 col-md-1-7">
+                                                <span class="image fit"><img src="media/sigma10.png" alt="Sigma 1.0" /></span>
+                                                <p style="text-align: center;">σ = 1.0</p>
+                                            </div>
+                                            <p>
+                                                You can see that lower noise levels result in more accurate denoising, while higher noise 
+                                                levels result in more blurry images and more error.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- B2 -->
+                        <section id="partB2">
+                            <div class="container">
+                                <header class="major">
+                                    <h3>Part B2: Time-Conditioned UNet</h3>
+                                </header>
+                                
+                                <p>
+                                    In this section, I implemented a time-conditioned UNet for diffusion modeling. The model was trained 
+                                    to predict noise at different timesteps, enabling iterative denoising of images. This builds upon 
+                                    the basic UNet from Part B1 by adding time conditioning through FCBlocks.
+                                </p>
+
+                                <h4>Architecture Modifications</h4>
+                                <p>
+                                    The UNet architecture was modified to include time conditioning through FCBlocks:
+                                </p>
+                                <ul>
+                                    <li>Added two FCBlocks for time embedding</li>
+                                    <li>Modified the unflatten and up1 layers to incorporate time information</li>
+                                    <li>Normalized time values to [0,1] range before embedding</li>
+                                </ul>
+
+                                <h4>Training Process</h4>
+                                <p>
+                                    The model was trained with the following specifications:
+                                </p>
+                                <ul>
+                                    <li>Batch size: 128</li>
+                                    <li>Hidden dimension: 64</li>
+                                    <li>Learning rate: 1e-3 with exponential decay</li>
+                                    <li>Training duration: 20 epochs</li>
+                                </ul>
+
+                                <!-- Training Loss -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/training_losses2.png" alt="Training Loss" /></span>
+                                        <p style="text-align: center;">Training Loss Over 20 Epochs</p>
+                                    </div>
+                                </div>
+
+                                <h4>Sampling Results</h4>
+                                <p>
+                                    Below are the sampling results after 5 and 20 epochs of training. The model shows improvement 
+                                    in generation quality as training progresses.
+                                </p>
+
+                                <!-- 5 Epochs Results -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/time5.png" alt="5 Epochs Results" /></span>
+                                        <p style="text-align: center;">Generated Samples after 5 Epochs</p>
+                                    </div>
+                                </div>
+
+                                <!-- 20 Epochs Results -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/time20.png" alt="20 Epochs Results" /></span>
+                                        <p style="text-align: center;">Generated Samples after 20 Epochs</p>
+                                    </div>
+                                </div>
+
+                                <h4>Analysis</h4>
+                                <p>
+                                    The training loss curve shows steady improvement over the 20 epochs, with the most significant 
+                                    improvements occurring in the first 10 epochs. The sampling results demonstrate the model's 
+                                    ability to generate increasingly clear and coherent MNIST digits as training progresses.
+                                </p>
+                            </div>
+                        </section>
+
+                        <!-- B3 -->
+                        <section id="partB3">
+                            <div class="container">
+                                <header class="major">
+                                    <h3>Part B3: Class-Conditioned UNet</h3>
+                                </header>
+                                
+                                <p>
+                                    Building upon the time-conditioned UNet, this section implements additional class conditioning 
+                                    to enable controlled generation of specific MNIST digits. The model now accepts both time step t 
+                                    and class label c as conditioning signals.
+                                </p>
+
+                                <h4>Architecture Enhancements</h4>
+                                <p>
+                                    The UNet architecture was further modified to include class conditioning:
+                                </p>
+                                <ul>
+                                    <li>Added two additional FCBlocks for class embedding</li>
+                                    <li>Implemented one-hot encoding for class labels (0-9)</li>
+                                    <li>Added class conditioning dropout (p=0.1) for unconditional training</li>
+                                    <li>Modified the modulation scheme to incorporate both time and class information</li>
+                                </ul>
+
+                                <h4>Training Configuration</h4>
+                                <p>
+                                    The model was trained with the following specifications:
+                                </p>
+                                <ul>
+                                    <li>Batch size: 128</li>
+                                    <li>Hidden dimension: 64</li>
+                                    <li>Learning rate: 1e-3 with exponential decay</li>
+                                    <li>Training duration: 20 epochs</li>
+                                    <li>Class conditioning dropout: 10%</li>
+                                    <li>Classifier-free guidance scale: 5.0</li>
+                                </ul>
+
+                                <!-- Training Loss -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/training_losses3.png" alt="Class-Conditioned Training Loss" /></span>
+                                        <p style="text-align: center;">Training Loss Over 20 Epochs</p>
+                                    </div>
+                                </div>
+
+                                <h4>Generation Results</h4>
+                                <p>
+                                    Below are the sampling results after 5 and 20 epochs of training, showing four instances 
+                                    of each digit (0-9). The results demonstrate the model's ability to generate specific 
+                                    digits while maintaining variation within each class.
+                                </p>
+
+                                <!-- 5 Epochs Results -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/class5.png" alt="5 Epochs Class Results" /></span>
+                                        <p style="text-align: center;">Generated Samples after 5 Epochs (4 instances per digit)</p>
+                                    </div>
+                                </div>
+
+                                <!-- 20 Epochs Results -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="image fit"><img src="media/class20.png" alt="20 Epochs Class Results" /></span>
+                                        <p style="text-align: center;">Generated Samples after 20 Epochs (4 instances per digit)</p>
+                                    </div>
+                                </div>
+
+                                <h4>Analysis</h4>
+                                <p>
+                                    The class-conditioned model shows several improvements over the time-only conditioned version and 
+                                    improved with higher epochs.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery.scrollex.min.js"></script>
+        <script src="../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../assets/js/browser.min.js"></script>
+        <script src="../assets/js/breakpoints.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <script src="../assets/js/main.js"></script>
+        <!-- Load MathJax -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
