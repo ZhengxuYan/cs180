@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>CS 180 Final Projects - Jason Yan</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="../assets/css/main.css" />
+    </head>
+    <body class="is-preload">
+        <!-- Header -->
+        <section id="header">
+            <header>
+                <p id="logo"><a href="../index.html">Back to Main Page</a></p>
+                <h2>CS 180 Final Projects</h2>
+            </header>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <!-- Image Quilting sections -->
+                    <li><a href="#quilt-random">Project 1: Random Sampling</a></li>
+                    <li><a href="#quilt-overlap">Project 1: Overlapping Patches</a></li>
+                    <li><a href="#quilt-seam">Project 1: Seam Finding</a></li>
+                    <li><a href="#quilt-transfer">Project 1: Texture Transfer</a></li>
+                    <!-- Light Field sections -->
+                    <li><a href="#light-depth">Project 2: Depth Refocusing</a></li>
+                    <li><a href="#light-aperture">Project 2: Aperture Adjustment</a></li>
+                </ul>
+            </nav>
+            <footer>
+                <ul class="icons">
+                    <li><a href="your-website" class="icon solid fa-globe"><span class="label">Website</span></a></li>
+                    <li><a href="your-linkedin" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+                    <li><a href="your-github" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                    <li><a href="mailto:your-email" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                </ul>
+            </footer>
+        </section>
+
+        <!-- Main content sections -->
+        <div id="wrapper">
+            <div id="main">
+                <!-- Overview -->
+                <section id="overview">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Final Projects Overview</h3>
+                        </header>
+                        <p>
+                            These projects explore two fascinating areas of computational photography:
+                        </p>
+                        <ul>
+                            <li><strong>Project 1: Image Quilting</strong> - A technique for texture synthesis and transfer using patch-based sampling and optimization</li>
+                            <li><strong>Project 2: Light Field Camera</strong> - Implementation of computational refocusing and aperture adjustment using light field data</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- After Overview section and before Image Quilting sections -->
+                <section class="project-break">
+                    <div class="container">
+                        <header class="major">
+                            <h2 style="text-align: center; padding: 2em 0; border-bottom: 2px solid #888;">Project 1: Image Quilting</h2>
+                        </header>
+                    </div>
+                </section>
+
+                <!-- After Project 1 break -->
+                <section id="quilt-overview">
+                    <div class="container">
+                        <p>
+                            The Image Quilting project implements the algorithm described in the SIGGRAPH 2001 paper by Efros and Freeman 
+                            for texture synthesis and transfer. The core objectives include:
+                        </p>
+                        <ul>
+                            <li>Creating larger textures from small samples through patch-based synthesis</li>
+                            <li>Implementing overlapping patch selection with error minimization</li>
+                            <li>Using dynamic programming for optimal seam finding</li>
+                            <li>Achieving texture transfer while preserving target image structure</li>
+                        </ul>
+                        <p>
+                            This implementation progresses through increasingly sophisticated methods, from basic random sampling 
+                            to advanced texture transfer with seam optimization.
+                        </p>
+                        
+                        <!-- Add the row of 7 images here -->
+                        <div class="row">
+                            <div class="col-4 col-sm-3 col-lg-1">
+                                <span class="image fit"><img src="media/bricks_small.jpg" alt="Image 1" /></span>
+                            </div>
+                            <div class="col-4 col-sm-3 col-lg-1">
+                                <span class="image fit"><img src="media/feynman.png" alt="Image 2" /></span>
+                            </div>
+                            <div class="col-4 col-sm-3 col-lg-1">
+                                <span class="image fit"><img src="media/sketch.png" alt="Image 3" /></span>
+                            </div>
+                            <div class="col-4 col-sm-3 col-lg-1">
+                                <span class="image fit"><img src="media/text_small.jpg" alt="Image 4" /></span>
+                            </div>
+                            <div class="col-4 col-sm-3 col-lg-1">
+                                <span class="image fit"><img src="media/texture.png" alt="Image 5" /></span>
+                            </div>
+                            <div class="col-4 col-sm-3 col-lg-1">
+                                <span class="image fit"><img src="media/toast.jpg" alt="Image 6" /></span>
+                            </div>
+                            <div class="col-4 col-sm-3 col-lg-1">
+                                <span class="image fit"><img src="media/white_small.jpg" alt="Image 7" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Image Quilting -->
+                <section id="quilt-random">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Random Sampling for Texture Synthesis</h3>
+                        </header>
+                        <p>
+                            The first step in image quilting involves randomly sampling patches from a source texture to create
+                            a larger texture. This implementation:
+                        </p>
+                        <ul>
+                            <li>Takes square patches of specified size from the input texture</li>
+                            <li>Places them in a grid pattern to create the output image</li>
+                            <li>Handles edge cases where patches extend beyond the desired output size</li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/random_brick.png" alt="Input Texture" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/random_text.png" alt="Random Quilting Result" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/random_toast.png" alt="Random Quilting Result 2" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/random_white.png" alt="Random Quilting Result 3" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="quilt-overlap">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Overlapping Patches</h3>
+                        </header>
+                        <p>
+                            To improve the quality of synthesized textures, we implement overlapping patches with error minimization:
+                        </p>
+                        <ul>
+                            <li>Computes SSD (Sum of Squared Differences) in overlap regions</li>
+                            <li>Selects patches that minimize error in overlapping areas</li>
+                            <li>Uses tolerance parameter to allow for variation in patch selection</li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/simple_brick.png" alt="Simple Brick Result" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/simple_text.png" alt="Simple Text Result" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/simple_toast.png" alt="Simple Toast Result" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/simple_white.png" alt="Simple White Result" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="quilt-seam">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Seam Finding</h3>
+                        </header>
+                        <p>
+                            The seam finding algorithm uses dynamic programming to find optimal boundaries between overlapping patches, 
+                            significantly reducing visible artifacts:
+                        </p>
+                        <ul>
+                            <li>Computes squared RGB differences between overlapping regions to create error surfaces</li>
+                            <li>Uses dynamic programming to find minimum-cost paths through error surfaces</li>
+                            <li>Handles both horizontal and vertical seams through matrix transposition</li>
+                            <li>Creates composite masks by intersecting individual seam masks using logical AND operations</li>
+                            <li>Applies the masks to smoothly blend overlapping patches at optimal boundaries</li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/seam_brick.png" alt="Seam Brick Result" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/seam_text.png" alt="Seam Text Result" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/seam_toast.png" alt="Seam Toast Result" /></span>
+                            </div>
+                            <div class="col-3">
+                                <span class="image fit"><img src="media/seam_white.png" alt="Seam White Result" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="quilt-transfer">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Texture Transfer</h3>
+                        </header>
+                        <p>
+                            The texture transfer implementation combines texture synthesis with a guidance image:
+                        </p>
+                        <ul>
+                            <li>Balances texture similarity with correspondence to guidance image</li>
+                            <li>Uses alpha parameter to control the strength of guidance</li>
+                            <li>Applies seam finding for smooth patch transitions</li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/feynman_sketch.png" alt="Feynman Sketch" /></span>
+                                <p style="text-align: center;">Feynman Portrait with Sketch Texture (α = 0.5)</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="image fit"><img src="media/feynman_toast.png" alt="Texture Transfer" /></span>
+                                <p style="text-align: center;">Feynman Portrait with Toast Texture (α = 0.4)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Before Light Field Camera sections (after quilt-transfer section) -->
+                <section class="project-break">
+                    <div class="container">
+                        <header class="major">
+                            <h2 style="text-align: center; padding: 2em 0; border-bottom: 2px solid #888;">Project 2: Light Field Camera</h2>
+                        </header>
+                    </div>
+                </section>
+
+                <!-- After Project 2 break -->
+                <section id="lightfield-overview">
+                    <div class="container">
+                        <p>
+                            The Light Field Camera project explores computational photography techniques based on the work by Ng et al., 
+                            demonstrating how multiple images captured across a plane enable sophisticated post-capture effects. Key aspects include:
+                        </p>
+                        <ul>
+                            <li>Processing light field data from multiple camera positions</li>
+                            <li>Implementing depth-based refocusing through image shifting and averaging</li>
+                            <li>Simulating variable aperture effects using selective image sampling</li>
+                        </ul>
+                        
+                        <!-- Add light field camera array image -->
+                        <div class="row">
+                            <div class="col-8 col-12-small" style="margin: 2em auto;">
+                                <span class="image fit"><img src="media/chess.png" alt="Light Field Camera Array" /></span>
+                            </div>
+                        </div>
+
+                        <p>
+                            The implementation uses real light field data to demonstrate how simple operations like shifting and averaging 
+                            can achieve complex photographic effects traditionally only possible during capture.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Light Field Camera -->
+                <section id="light-depth">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Depth Refocusing</h3>
+                        </header>
+                        <p>
+                            The depth refocusing implementation processes a light field dataset consisting of multiple images captured from a 17x17 camera array:
+                        </p>
+                        <ul>
+                            <li>Loads and organizes rectified images with their corresponding spatial coordinates</li>
+                            <li>Implements shift-and-add algorithm where images are:
+                                <ul>
+                                    <li>Shifted relative to a center reference image (position 8,8)</li>
+                                    <li>Aligned based on a scale factor that determines focal depth</li>
+                                    <li>Averaged to create the final refocused image</li>
+                                </ul>
+                            </li>
+                            <li>Explores scale factors from 0.1 (far focus) to -0.5 (near focus)</li>
+                            <li>Handles edge cases with proper image padding and boundary management</li>
+                            <li>Creates smooth focus transitions through 100 interpolated frames</li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/chess_depth_refocus.gif" alt="Depth Refocusing" /></span>
+                                <p style="text-align: center;">Depth Refocusing Animation (100 frames, scale factor 0.1 to -0.5)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="light-aperture">
+                    <div class="container">
+                        <header class="major">
+                            <h3>Aperture Adjustment</h3>
+                        </header>
+                        <p>
+                            The aperture adjustment implementation simulates variable aperture effects by selectively sampling the light field:
+                        </p>
+                        <ul>
+                            <li>Centers sampling around the reference camera (position 8,8)</li>
+                            <li>Implements circular aperture simulation by:
+                                <ul>
+                                    <li>Selecting images within specified radius (0-8) from center</li>
+                                    <li>Applying depth refocusing (scale factor -0.2) to selected subset</li>
+                                    <li>Averaging contributions from all cameras within aperture</li>
+                                </ul>
+                            </li>
+                            <li>Demonstrates depth of field effects:
+                                <ul>
+                                    <li>Small radius (0-2): Deep depth of field, sharper overall</li>
+                                    <li>Large radius (6-8): Shallow depth of field, stronger bokeh</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="image fit"><img src="media/chess_aperture_adjust.gif" alt="Aperture Adjustment" /></span>
+                                <p style="text-align: center;">Aperture Adjustment Animation (Radius 0-8, 1 frame per second)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery.scrollex.min.js"></script>
+        <script src="../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../assets/js/browser.min.js"></script>
+        <script src="../assets/js/breakpoints.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <script src="../assets/js/main.js"></script>
+    </body>
+</html>
